@@ -2,41 +2,38 @@ package UI;
 
 import java.util.ArrayList;
 
-import gameLogic.controllers.GameLogic;
-import gameLogic.players.Player;
+import gameLogic.Table.Table;
+import gameLogic.controllers.PlayerController;
+import gameLogic.controllers.TableController;
+import gameLogic.controllers.UserController;
+import gameLogic.domain.Player;
+import gameLogic.domain.User;
 
 public class Match {
-    private GameLogic gameLogic;
+    PlayerController playerController;
+    TableController tableController;
+    UserController userController;
+    ArrayList<Player> players;
+    Table table;
 
-    public Match(){
-        gameLogic = new GameLogic(2);
+    public Match(PlayerController playerController, UserController userController, TableController tableController){
+        this.playerController = playerController;
+        this.tableController = tableController;
+        this.userController = userController;
     }
 
     public void startGame(){
-        ArrayList<Player> selectedPlayers = selectPlayers();
-        gameLogic.startGame(selectedPlayers.get(0), selectedPlayers.get(1));
+        SelectPlayer selectPlayer = new SelectPlayer(userController);
+        ArrayList<User> selectedPlayers = selectPlayer.selectPlayers();
+        table = tableController.generateTable();
+        players = playerController.setPlayers(selectedPlayers.get(0).getId(), selectedPlayers.get(1).getId());
     }
 
-    private ArrayList<Player> selectPlayers(){
-        ArrayList<Player> allPlayers = gameLogic.getPlayers();
-        ArrayList<Player> selectedPlayers = new ArrayList<Player>();
-        String option = "";
-        while(selectedPlayers.size() != 2){
-            System.out.println(String.format("----------------Select Player %s----------------", selectedPlayers.size() + 1));
-            for(int i = 0; i < allPlayers.size(); i++) 
-                System.out.println(String.format("%s - %s", i + 1, allPlayers.get(i).getName()));
-            System.out.println("-----------------------------------------------");
-            try{
-                option = System.console().readLine();
-                int value = Integer.parseInt(option);
-                if(value > 0 && value <= allPlayers.size()){
-                    selectedPlayers.add(allPlayers.get(value-1));
-                    allPlayers.remove(value-1);
-                } 
-            }catch (NumberFormatException ex){
-                System.out.print("Invalid input " + option);
-            }
-        }
-        return selectedPlayers;
+    public void generateTable(){
+        System.out.println("-------------------WarChest-------------------");
+        System.out.println("1-Let's play");
+        System.out.println("2-Create user");
+        System.out.println("3-View stats");
+        System.out.println("----------------------------------------------");
     }
 }

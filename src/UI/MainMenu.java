@@ -1,15 +1,20 @@
 package UI;
 
+import gameLogic.controllers.PlayerController;
+import gameLogic.controllers.TableController;
+import gameLogic.controllers.UserController;
+
 public class MainMenu {
 
-    private void startMenu(){
+    private void startMenu(PlayerController playerController, UserController userController, TableController tableController){
         showMenu();
         String option = "";
         while(!option.equals("exit")){
             option = System.console().readLine();
             switch(option) {
                 case "1":
-                    new Match().startGame();
+                    Match match = new Match(playerController, userController, tableController);
+                    match.startGame();
                     break;
                 case "2":
 
@@ -31,8 +36,8 @@ public class MainMenu {
         System.out.println("----------------------------------------------");
     }
 
-    public MainMenu(){
-        startMenu();
+    public MainMenu(PlayerController playerController, UserController userController, TableController tableController){
+        startMenu(playerController, userController, tableController);
     }
 
 }

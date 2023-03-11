@@ -1,6 +1,8 @@
 package gameLogic.Unit;
 
-abstract class Unit{
+import gameLogic.IUnit.IUnit;
+
+abstract class Unit implements IUnit{
     int id, unitType;
 
     public boolean canAttack(int firstX, int firstY, int secondX, int secondY, boolean newAction){
