@@ -1,4 +1,4 @@
-package UI;
+package UI.TerminalApp;
 
 import gameLogic.controllers.PlayerController;
 import gameLogic.controllers.BoardController;

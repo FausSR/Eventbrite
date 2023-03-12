@@ -1,5 +1,5 @@
-import UI.MainMenu;
 import gameLogic.controllers.PlayerController;
+import UI.TerminalApp.MainMenu;
 import gameLogic.controllers.BoardController;
 import gameLogic.controllers.UserController;
 import gameLogic.repository.UserRepository;

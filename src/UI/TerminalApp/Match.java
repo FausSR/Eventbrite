@@ -1,9 +1,10 @@
-package UI;
+package UI.TerminalApp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import UI.Exception.UIException;
 import gameLogic.Unit.UnitInfo;
 import gameLogic.controllers.PlayerController;
 import gameLogic.controllers.BoardController;
@@ -113,17 +114,20 @@ public class Match {
                     case 2:
                         // recruitAction();
                     case 3:
-                        placeAction(player);
+                        // placeAction(player);
                     case 4:
                         // attackAction();
                     case 5:
-                        // controlAction();
+                        controlAction(player);
                     case 6:
                         // initiativeAction();
                 }
             }
-            catch(RuntimeException exc){
-                System.out.println("Invalid input, please try again.");
+            catch(RuntimeException | UIException exc){
+                if(exc instanceof UIException)
+                    System.out.println(exc.getMessage());
+                else
+                    System.out.println("Invalid input, please try again.");
                 System.out.println("Press enter to continue.");
                 System.console().readLine();
             }
@@ -146,16 +150,19 @@ public class Match {
         for(int i = 0; i < list.size(); i++) System.out.println(String.format("%s- %s", i + 1, unitInfo.getName(list.get(i))));
     }
 
-    private void placeAction(Player player){
+    private void controlAction(Player player) throws UIException{
         Zone actualPosition = askForPosition();
-        boolean actionExecuteCorrect = false;
+
         boolean positionIsControlPoint = actualPosition.getIsControlZone();
         boolean positionIsFreeOrNotMine = (actualPosition.getOwner() == null || actualPosition.getOwner() != player);
         boolean positionHaveAUnitOfMine = (actualPosition.getUnit() != null && actualPosition.getUnit().getUserId() == player.getUser().getId());
-        if(positionIsControlPoint && positionIsFreeOrNotMine && positionHaveAUnitOfMine) actionExecuteCorrect = true;
-        if(actionExecuteCorrect) askToDiscardAnyCard(player);
-        if(actionExecuteCorrect) System.out.println("Correct action, press enter to continue.");
-        else System.out.println("Invalid action, press enter to continue.");
+        
+        if(!positionIsControlPoint || !positionIsFreeOrNotMine || !positionHaveAUnitOfMine) 
+            throw new UIException("Invalid position to capture.");
+
+        askToDiscardAnyCard(player);
+
+        System.out.println("Correct action, press enter to continue.");
         System.console().readLine();
     }
 
