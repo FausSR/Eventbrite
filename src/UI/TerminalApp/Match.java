@@ -132,7 +132,7 @@ public class Match {
                 int value = Integer.parseInt(option);
                 switch(value){
                     case 1:
-                        actions.moveAction(player, actualTurn);
+                        actions.moveAction(player, otherPlayer, actualTurn);
                         break;
                     case 2:
                         actions.recruitAction(player);

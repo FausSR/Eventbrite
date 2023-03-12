@@ -14,6 +14,8 @@ public class Actions {
     UnitInfo unitInfo;
     int LANCER_UNIT_TYPE = 2;
     int BERSERKER_UNIT_TYPE = 4;
+    int CAVALRY_UNIT_TYPE = 5;
+    int SWORDSMAN_UNIT_TYPE = 8;
 
     public Actions(Board board, UnitInfo unitInfo){
         this.unitInfo = unitInfo;
@@ -81,9 +83,10 @@ public class Actions {
         else player.getRecruitment().put(selectedUnit, player.getRecruitment().get(selectedUnit) -1);
     }
 
-    public void moveAction(Player player, int actualTurn) throws UIException{
+    public void moveAction(Player player, Player otherPlayer, int actualTurn) throws UIException{
         System.out.println("Select unit to move.");
         Zone actualPosition = askForPosition(true);
+        int actualUnitType = actualPosition.getUnit().getUnitType();
         if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
 
         System.out.println("Select where to move.");
@@ -106,13 +109,18 @@ public class Actions {
         actualPosition.setUnit(null);
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
+
+        if(actualUnitType == CAVALRY_UNIT_TYPE){
+            System.out.println("Your cavalry can attack after move.");
+            extraAttack(player, otherPlayer, actualPosition, actualTurn);
+        }
     }
 
     public void attackAction(Player player, Player otherPlayer, int actualTurn) throws UIException{
         System.out.println("Select unit that attack.");
         Zone actualPosition = askForPosition(true);
         if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
-        int actualunitType = actualPosition.getUnit().getUnitType();
+        int actualUnitType = actualPosition.getUnit().getUnitType();
 
         System.out.println("Select unit to attack.");
         Zone attackPosition = askForPosition(true);
@@ -122,7 +130,7 @@ public class Actions {
         int indexOfUnit = askToDiscard(player);
         int unitToPlace = player.getHand().get(indexOfUnit);
         checkRoyalInvalidAction(unitToPlace);
-        if(actualunitType != unitToPlace) throw new UIException("The card you are trying to dicard is a different unit.");
+        if(actualUnitType != unitToPlace) throw new UIException("The card you are trying to dicard is a different unit.");
 
         if(!actualPosition.getUnit().canAttack(
             actualPosition.getRow(), 
@@ -132,7 +140,7 @@ public class Actions {
             actualTurn)) throw new UIException("That unit can't perform that action.");
         
         
-        if(actualunitType == LANCER_UNIT_TYPE)
+        if(actualUnitType == LANCER_UNIT_TYPE)
             lancerSpecialAttack(player, actualPosition, attackPosition);
 
         attackPosition.setUnit(null);
@@ -140,8 +148,14 @@ public class Actions {
         player.getDiscard().add(unitToPlace);
         otherPlayer.substractControlPoint();
 
-        if(actualunitType == BERSERKER_UNIT_TYPE)
-            berserkerSpecialAttack(player, otherPlayer, actualPosition, actualTurn);
+        if(actualUnitType == BERSERKER_UNIT_TYPE){
+            System.out.println("Your berserker can attack again.");
+            extraAttack(player, otherPlayer, actualPosition, actualTurn);
+        }
+        if(actualUnitType == SWORDSMAN_UNIT_TYPE){
+            System.out.println("Your swordsman can move after attack.");
+            swordsmanSpecialMovement(player, otherPlayer, actualPosition, actualTurn);
+        }
     }
 
     public int initiativeAction(Player player, int initiative) throws UIException{
@@ -238,11 +252,11 @@ public class Actions {
         actualPosition.setUnit(null);
     }
 
-    private void berserkerSpecialAttack(Player player, Player otherPlayer, Zone actualPosition, int actualTurn) throws UIException{
+    private void extraAttack(Player player, Player otherPlayer, Zone actualPosition, int actualTurn) throws UIException{
         String option = "";
         while(!option.equals("N")) {
             try{
-                System.out.println("If want to attack again type Y.");
+                System.out.println("If want to attack type Y.");
                 System.out.println("If not, type any N.");
                 option = System.console().readLine();
                 if(option.equals("Y")) {
@@ -258,7 +272,39 @@ public class Actions {
                         actualTurn)) throw new UIException("That unit can't perform that action.");
     
                     attackPosition.setUnit(null);
-                    otherPlayer.substractControlPoint();
+                    otherPlayer.substractDeployedUnits();
+                    option = "N";
+                }
+            }
+            catch(UIException exc){
+                System.out.println(exc.getMessage());
+                System.out.println("Press enter to continue.");
+                System.console().readLine();
+            }
+        }
+    }
+
+    private void swordsmanSpecialMovement(Player player, Player otherPlayer, Zone actualPosition, int actualTurn){
+        String option = "";
+        while(!option.equals("N")) {
+            try{
+                System.out.println("If want to move type Y.");
+                System.out.println("If not, type any N.");
+                option = System.console().readLine();
+                if(option.equals("Y")) {
+                    System.out.println("Select where to move.");
+                    Zone newPosition = askForPosition(true);
+                    if(newPosition.getUnit() != null) throw new UIException("Theres another unit there.");
+                    
+                    if(!actualPosition.getUnit().canMove(
+                        actualPosition.getRow(), 
+                        actualPosition.getColumn(), 
+                        newPosition.getRow(), 
+                        newPosition.getColumn(), 
+                        actualTurn)) throw new UIException("That unit can't perform that action.");
+
+                    newPosition.setUnit(actualPosition.getUnit());
+                    actualPosition.setUnit(null);
                     option = "N";
                 }
             }

@@ -38,6 +38,21 @@ public class UnitInfo {
         cavalry.name = "Cavalry";
         cavalry.totalAmount = 4;
         unitGeneralInformation.put(5, cavalry);
+
+        SpecificUnitInfo crossbowman = new SpecificUnitInfo();
+        cavalry.name = "Crossbowman";
+        cavalry.totalAmount = 5;
+        unitGeneralInformation.put(6, crossbowman);
+        
+        SpecificUnitInfo mercenary = new SpecificUnitInfo();
+        knight.name = "Mercenary";
+        knight.totalAmount = 5;
+        unitGeneralInformation.put(7, mercenary);
+        
+        SpecificUnitInfo swordsman = new SpecificUnitInfo();
+        knight.name = "Swordsman";
+        knight.totalAmount = 4;
+        unitGeneralInformation.put(7, swordsman);
     }
 
     public IUnit unitConstructor(int unitType, int userId){
@@ -52,6 +67,12 @@ public class UnitInfo {
                 return new Berserker(unitType, userId);
             case 5:
                 return new Cavalry(unitType, userId);
+            case 6:
+                return new Crossbowman(unitType, userId);
+            case 7:
+                return new Mercenary(unitType, userId);
+            case 8:
+                return new Swordsman(unitType, userId);
             default:
                 System.out.println("That unit doesn't exists"); // throw exception
                 return null;
