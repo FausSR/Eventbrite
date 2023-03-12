@@ -20,7 +20,7 @@ public class Actions {
         this.board = board;
     }
     
-    public void controlAction(Player player) throws UIException{
+    public void controlAction(Player player, Player otherPlayer) throws UIException{
         Zone actualPosition = askForPosition(true);
 
         boolean positionIsControlPoint = actualPosition.getIsControlZone();
@@ -32,6 +32,10 @@ public class Actions {
 
         int indexOfUnit = askToDiscard(player);
         int cardToDiscard = player.getHand().get(indexOfUnit);
+
+        if(actualPosition.getOwner() == otherPlayer) otherPlayer.substractControlPoint();
+        player.addControlPoint();
+        actualPosition.setOwner(player);
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(cardToDiscard);
 
@@ -262,6 +266,4 @@ public class Actions {
             }
         }
     }
-
-
 }

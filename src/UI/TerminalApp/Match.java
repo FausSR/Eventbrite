@@ -25,7 +25,7 @@ public class Match {
     UnitInfo unitInfo;
     int actualTurn, initiative;
     boolean endMatch;
-    String resetColor = "\033[0m";
+    String RESET_COLOR = "\033[0m";
 
     public Match(PlayerController playerController, UserController userController, BoardController boardController){
         this.playerController = playerController;
@@ -60,9 +60,9 @@ public class Match {
             for(int j = 0; j < board.getSize(); j++){
                 Zone zone = board.getZone(i, j);
                 if(zone.getUnit() != null) 
-                    System.out.print(String.format("| %s%s%s", getUnitOwner(zone.getUnit()).getColor(), zone.getUnit().getShortName(), this.resetColor));
+                    System.out.print(String.format("| %s%s%s", getUnitOwner(zone.getUnit()).getColor(), zone.getUnit().getShortName(), this.RESET_COLOR));
                 else if(zone.getIsControlZone() && zone.getOwner() != null) 
-                    System.out.print(String.format("| %s%s%s ", zone.getOwner().getColor(), getPlayerFaction(zone.getOwner()), this.resetColor));
+                    System.out.print(String.format("| %s%s%s ", zone.getOwner().getColor(), getPlayerFaction(zone.getOwner()), this.RESET_COLOR));
                 else if(zone.getIsControlZone()) 
                     System.out.print("| @ ");
                 else 
@@ -95,13 +95,13 @@ public class Match {
     }
 
     public void startGame(){
-        while(!endMatch){
+        while(!this.endMatch){
             Player firstPlayer = players.get(this.initiative);
             Player secondPlayer = null;
             if(this.initiative == 0) secondPlayer = players.get(1);
             else secondPlayer = players.get(0);
-            actionMenu(firstPlayer);
-            actionMenu(secondPlayer);
+            actionMenu(firstPlayer, secondPlayer);
+            actionMenu(secondPlayer, firstPlayer);
             playerController.drawCards(firstPlayer);
             playerController.drawCards(secondPlayer);
             if(firstPlayer.getHand().size() == 0) playerController.fillBag(firstPlayer);
@@ -109,12 +109,12 @@ public class Match {
         }
     }
 
-    public void actionMenu(Player player){
+    public void actionMenu(Player player, Player otherPlayer){
         this.actualTurn++;
-        while(player.getHand().size() > 0){
+        while(player.getHand().size() > 0 && !this.endMatch){
             try{
                 showBoard();
-                System.out.println(String.format("%s--------%s turn--------%s", player.getColor(), player.getUser().getName(), this.resetColor));
+                System.out.println(String.format("%s--------%s turn--------%s", player.getColor(), player.getUser().getName(), this.RESET_COLOR));
                 System.out.println(String.format("Iniciative owner: %s", players.get(this.initiative).getUser().getName()));
                 System.out.println(String.format("Hand: %s", showNamesInArray(player.getHand())));
                 System.out.println(String.format("Total discard:  %s", showNamesInArray(player.getDiscard())));
@@ -142,7 +142,7 @@ public class Match {
                         actions.attackAction(player, actualTurn);
                         break;
                     case 5:
-                        actions.controlAction(player);
+                        actions.controlAction(player, otherPlayer);
                         break;
                     case 6:
                         this.initiative = actions.initiativeAction(player, initiative);
