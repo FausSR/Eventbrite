@@ -22,13 +22,15 @@ public class Actions {
 
         boolean positionIsControlPoint = actualPosition.getIsControlZone();
         boolean positionIsFreeOrNotMine = (actualPosition.getOwner() == null || actualPosition.getOwner() != player);
-        boolean positionHaveAUnitOfMine = (actualPosition.getUnit() != null && actualPosition.getUnit().getUserId() == player.getUser().getId());
+        boolean positionHaveAUnitOfMine = checkIfUnitIsMine(actualPosition, player);
         
         if(!positionIsControlPoint || !positionIsFreeOrNotMine || !positionHaveAUnitOfMine) 
             throw new UIException("Invalid position to capture.");
 
-        int cardToDiscard = askToDiscard(player);
-        player.getHand().remove(cardToDiscard);
+        int indexOfUnit = askToDiscard(player);
+        int cardToDiscard = player.getHand().get(indexOfUnit);
+        player.getHand().remove(indexOfUnit);
+        player.getDiscard().add(cardToDiscard);
 
         System.out.println("Correct action, press enter to continue.");
         System.console().readLine();
@@ -41,9 +43,45 @@ public class Actions {
         
         int indexOfUnit = askToDiscard(player);
         int unitToPlace = player.getHand().get(indexOfUnit);
-        if(unitInfo.isRoyalUnit(unitToPlace)) throw new UIException("Cant place royal card.");
-        player.getHand().remove(indexOfUnit);
+        checkRoyalInvalidAction(unitToPlace);
+
         actualPosition.setUnit(unitInfo.unitConstructor(unitToPlace, player.getUser().getId()));
+        player.getHand().remove(indexOfUnit);
+        player.getDiscard().add(unitToPlace);
+    }
+
+    public void moveAction(Player player, boolean firstAction) throws UIException{
+        System.out.println("Select unit to move.");
+        Zone actualPosition = askForPosition();
+        if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
+
+        Zone newPosition = askForPosition();
+        if(newPosition.getUnit() != null) throw new UIException("Theres another unit there.");
+
+        int indexOfUnit = askToDiscard(player);
+        int unitToPlace = player.getHand().get(indexOfUnit);
+        checkRoyalInvalidAction(unitToPlace);
+        if(actualPosition.getUnit().getUnitType() != unitToPlace) throw new UIException("The card you are trying to dicard is a different unit.");
+
+        if(!actualPosition.getUnit().canMove(
+            actualPosition.getRow(), 
+            actualPosition.getColumn(), 
+            newPosition.getRow(), 
+            newPosition.getColumn(), 
+            firstAction)) throw new UIException("That unit can't perform that action.");
+
+        newPosition.setUnit(actualPosition.getUnit());
+        actualPosition.setUnit(null);
+        player.getHand().remove(indexOfUnit);
+        player.getDiscard().add(unitToPlace);
+    }
+
+    private boolean checkIfUnitIsMine(Zone zone, Player player){
+        return zone.getUnit() != null && zone.getUnit().getUserId() == player.getUser().getId();
+    }
+
+    private void checkRoyalInvalidAction(int unitToPlace) throws UIException{
+        if(unitInfo.isRoyalUnit(unitToPlace)) throw new UIException("Cant use royal card for that action.");
     }
 
     private Zone askForPosition(){

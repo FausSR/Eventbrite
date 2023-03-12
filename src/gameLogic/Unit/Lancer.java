@@ -7,7 +7,7 @@ public class Lancer extends Unit{
     @Override
     public boolean canMove(int firstX, int firstY, int secondX, int secondY, boolean newTurn){
         boolean executeAction = false;
-        double flatNumber = Math.sqrt(Math.pow((firstX-firstY), 2) + Math.pow((secondX-secondY), 2));
+        double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
         double maxDiagonalDistance = Math.sqrt(2);
         if(flatNumber <= maxDiagonalDistance){
             this.alreadyMoved = true;
@@ -20,7 +20,7 @@ public class Lancer extends Unit{
     public boolean canAttack(int firstX, int firstY, int secondX, int secondY, boolean newTurn) {
         if(newTurn) this.alreadyMoved = false; // I suppose that if you dont move in the same turn, you cant attack adjacent
         boolean executeAction = false;
-        double flatNumber = Math.sqrt(Math.pow((firstX-firstY), 2) + Math.pow((secondX-secondY), 2));
+        double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
 
         boolean canAttackDirectlly = flatNumber > Math.sqrt(2) && flatNumber <= Math.sqrt(18);
         boolean attackAdjacentIfMove = flatNumber <= Math.sqrt(2) && this.alreadyMoved;
