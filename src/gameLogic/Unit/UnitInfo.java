@@ -40,31 +40,33 @@ public class UnitInfo {
         unitGeneralInformation.put(5, cavalry);
     }
 
-    public IUnit unitConstructor(int unitType){
+    public IUnit unitConstructor(int unitType, int userId){
         switch(unitType){
             case 1:
-                return new Archer(unitType);
+                return new Archer(unitType, userId);
             case 2:
-                return new Lancer(unitType);
+                return new Lancer(unitType, userId);
             case 3:
-                return new Knight(unitType);
+                return new Knight(unitType, userId);
             case 4:
-                return new Berserker(unitType);
+                return new Berserker(unitType, userId);
             case 5:
-                return new Cavalry(unitType);
+                return new Cavalry(unitType, userId);
             default:
-                System.out.println("That unit doesn't exists");
+                System.out.println("That unit doesn't exists"); // throw exception
                 return null;
         }
     }
 
-    public int getAmount(int unitId){
-        int value = unitGeneralInformation.get(unitId).totalAmount;
+    public int getAmount(int unitType){
+        if(unitType == 99) return 1;
+        int value = unitGeneralInformation.get(unitType).totalAmount;
         return value;
     }
 
-    public String getName(int unitId){
-        String value = unitGeneralInformation.get(unitId).name;
+    public String getName(int unitType){
+        if(unitType == 99) return "Royal";
+        String value = unitGeneralInformation.get(unitType).name;
         return value;
     }
 

@@ -1,6 +1,8 @@
 package UI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import gameLogic.Unit.UnitInfo;
 import gameLogic.controllers.PlayerController;
@@ -90,13 +92,89 @@ public class Match {
     }
 
     public void actionMenu(Player player){
-        ArrayList<Integer> actualHand = new ArrayList<>(player.getHand());
-        ArrayList<Integer> actualDiscard = new ArrayList<>();
-        ArrayList<Integer> totalDiscard = new ArrayList<>(player.getDiscard());
-        while(actualHand.size() > 0){
-            showBoard();
-            System.out.println(String.format("Hand %s", actualHand.toString()));
-            System.console().readLine();
+        while(player.getHand().size() > 0){
+            try{
+                showBoard();
+                System.out.println(String.format("Hand: %s", showNamesInArray(player.getHand())));
+                System.out.println(String.format("Total discard:  %s", showNamesInArray(player.getDiscard())));
+                System.out.println(String.format("Recruitements:  %s", showNamesInHash(player.getRecruitment())));
+                System.out.println("-----------Actions-----------");
+                System.out.println("1-Move");
+                System.out.println("2-Recruit");
+                System.out.println("3-Place");
+                System.out.println("4-Attack");
+                System.out.println("5-Control");
+                System.out.println("6-Initiative");
+                String option = System.console().readLine();
+                int value = Integer.parseInt(option);
+                switch(value){
+                    case 1:
+                        // moveAction();
+                    case 2:
+                        // recruitAction();
+                    case 3:
+                        placeAction(player);
+                    case 4:
+                        // attackAction();
+                    case 5:
+                        // controlAction();
+                    case 6:
+                        // initiativeAction();
+                }
+            }
+            catch(RuntimeException exc){
+                System.out.println("Invalid input, please try again.");
+                System.out.println("Press enter to continue.");
+                System.console().readLine();
+            }
         }
+    }
+
+    private String showNamesInArray(ArrayList<Integer> list){
+        return list.stream()
+                .map(x -> unitInfo.getName(x))
+                .collect(Collectors.joining(", "));
+    }
+
+    private String showNamesInHash(HashMap<Integer, Integer> map){
+        return map.entrySet().stream()
+                .map(x -> String.format("%s = %s", unitInfo.getName(x.getKey()), x.getValue()))
+                .collect(Collectors.joining(", ", "", ""));
+    }
+
+    private void showNamesInTerminal(ArrayList<Integer> list){
+        for(int i = 0; i < list.size(); i++) System.out.println(String.format("%s- %s", i + 1, unitInfo.getName(list.get(i))));
+    }
+
+    private void placeAction(Player player){
+        Zone actualPosition = askForPosition();
+        boolean actionExecuteCorrect = false;
+        boolean positionIsControlPoint = actualPosition.getIsControlZone();
+        boolean positionIsFreeOrNotMine = (actualPosition.getOwner() == null || actualPosition.getOwner() != player);
+        boolean positionHaveAUnitOfMine = (actualPosition.getUnit() != null && actualPosition.getUnit().getUserId() == player.getUser().getId());
+        if(positionIsControlPoint && positionIsFreeOrNotMine && positionHaveAUnitOfMine) actionExecuteCorrect = true;
+        if(actionExecuteCorrect) askToDiscardAnyCard(player);
+        if(actionExecuteCorrect) System.out.println("Correct action, press enter to continue.");
+        else System.out.println("Invalid action, press enter to continue.");
+        System.console().readLine();
+    }
+
+    private Zone askForPosition() throws RuntimeException{
+        System.out.println("Position (row column)");
+        System.out.println("Example: 1 2");
+        Zone zone = null;
+        String option = System.console().readLine().replaceAll("\\s+","");
+        int row = Integer.parseInt(String.valueOf(option.charAt(0)));
+        int column = Integer.parseInt(String.valueOf(option.charAt(1)));
+        zone = board.getZone(row, column);
+        return zone;
+    }
+
+    private void askToDiscardAnyCard(Player player){
+        System.out.println("Discard card:");
+        showNamesInTerminal(player.getHand());
+        String option = System.console().readLine();
+        int index = Integer.parseInt(option);
+        player.getHand().remove(index);
     }
 }

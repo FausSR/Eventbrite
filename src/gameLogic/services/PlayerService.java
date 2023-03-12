@@ -79,6 +79,11 @@ public class PlayerService {
             firstBag.add(unitType);
             firstRecruitment.put(unitType, (unitInfo.getAmount(unitType) - 2));
         }
+        
+        int unitTypeOfRoyalCoin = 99;
+        firstBag.add(unitTypeOfRoyalCoin);
+
         actualPlayer.setBag(firstBag);
+        actualPlayer.setRecruitment(firstRecruitment);
     }
 }

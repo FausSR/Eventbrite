@@ -64,4 +64,16 @@ public class Player {
     public void addToDiscard(ArrayList<Integer> discard){
         this.discard.addAll(discard);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Player)) {
+            return false;
+        }
+        Player c = (Player) o;
+        return Integer.compare(user.id, c.getUser().getId()) == 0;
+    }
 }

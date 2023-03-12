@@ -17,7 +17,7 @@ public class BoardService {
         for(int i = 0; i < numberOfColumns; i++){
             ArrayList<Zone> row = new ArrayList<Zone>();
             for(int j = 0; j < numberOfColumns; j++){
-                row.add(new Zone());
+                row.add(new Zone(i,j));
             }
             board.setRow(row);
         }

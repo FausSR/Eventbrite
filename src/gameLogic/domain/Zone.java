@@ -6,6 +6,7 @@ public class Zone {
     IUnit unit;
     boolean isControlZone;
     Player owner;
+    int row, column;
 
     public IUnit getUnit() {
         return unit;
@@ -31,8 +32,10 @@ public class Zone {
         this.isControlZone = isControlZone;
     }
 
-    public Zone(){
+    public Zone(int row, int column){
         this.isControlZone = false;
+        this.row = row;
+        this.column = column;
     }
 
     public Zone(boolean isControlZone, Player owner){

@@ -33,8 +33,8 @@ public class Lancer extends Unit{
         return executeAction;
     }
     
-    public Lancer(int unitType){
-        super(unitType, "La");
+    public Lancer(int unitType, int userId){
+        super(unitType, "La", userId);
         this.alreadyMoved = false;
     }
 }

@@ -9,7 +9,7 @@ public class Archer extends Unit{
         return false;
     }
 
-    public Archer(int unitType){
-        super(unitType, "Ar");
+    public Archer(int unitType, int userId){
+        super(unitType, "Ar", userId);
     }
 }

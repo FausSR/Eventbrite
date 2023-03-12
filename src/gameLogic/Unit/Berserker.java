@@ -37,8 +37,8 @@ public class Berserker extends Unit{
         return executeAction;
     }
     
-    public Berserker(int unitType){
-        super(unitType, "Br");
+    public Berserker(int unitType, int userId){
+        super(unitType, "Br", userId);
         this.attackedBefore = false;
         this.canAttack = true;
     }
