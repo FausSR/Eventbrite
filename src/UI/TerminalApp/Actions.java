@@ -138,6 +138,15 @@ public class Actions {
             berserkerSpecialAttack(player, actualPosition, actualTurn);
     }
 
+    public int initiativeAction(Player player, int initiative) throws UIException{
+        if(player.getPlayerNumber() == initiative) throw new UIException("The initiative its already yours.");
+        int indexOfUnit = askToDiscard(player);
+        int unitToPlace = player.getHand().get(indexOfUnit);
+        player.getHand().remove(indexOfUnit);
+        player.getDiscard().add(unitToPlace);
+        return player.getPlayerNumber();
+    }
+
     private boolean checkIfUnitIsMine(Zone zone, Player player){
         return zone.getUnit() != null && zone.getUnit().getUserId() == player.getUser().getId();
     }
@@ -248,7 +257,11 @@ public class Actions {
             }
             catch(UIException exc){
                 System.out.println(exc.getMessage());
+                System.out.println("Press enter to continue.");
+                System.console().readLine();
             }
         }
     }
+
+
 }

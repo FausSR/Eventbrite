@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Player {
     ArrayList<Integer> discard, bag, selectedCards, hand;
     String color;
+    int playerNumber;
     HashMap<Integer, Integer> recruitment;
     User user;
 
@@ -73,6 +74,14 @@ public class Player {
 
     public void addToDiscard(ArrayList<Integer> discard){
         this.discard.addAll(discard);
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
     }
 
     @Override

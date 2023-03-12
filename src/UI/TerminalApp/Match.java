@@ -23,7 +23,7 @@ public class Match {
     ArrayList<Player> players;
     Board board;
     UnitInfo unitInfo;
-    int actualTurn, iniciative;
+    int actualTurn, initiative;
     boolean endMatch;
     String resetColor = "\033[0m";
 
@@ -33,7 +33,7 @@ public class Match {
         this.userController = userController;
         this.unitInfo = new UnitInfo();
         this.actualTurn = 1;
-        this.iniciative = 0;
+        this.initiative = 0;
         this.endMatch = false;
     }
 
@@ -96,9 +96,9 @@ public class Match {
 
     public void startGame(){
         while(!endMatch){
-            Player firstPlayer = players.get(this.iniciative);
+            Player firstPlayer = players.get(this.initiative);
             Player secondPlayer = null;
-            if(this.iniciative == 0) secondPlayer = players.get(1);
+            if(this.initiative == 0) secondPlayer = players.get(1);
             else secondPlayer = players.get(0);
             actionMenu(firstPlayer);
             actionMenu(secondPlayer);
@@ -114,7 +114,8 @@ public class Match {
         while(player.getHand().size() > 0){
             try{
                 showBoard();
-                System.out.println(String.format("%s-----------%s-----------%s", player.getColor(), player.getUser().getName(), this.resetColor));
+                System.out.println(String.format("%s--------%s turn--------%s", player.getColor(), player.getUser().getName(), this.resetColor));
+                System.out.println(String.format("Iniciative owner: %s", players.get(this.initiative).getUser().getName()));
                 System.out.println(String.format("Hand: %s", showNamesInArray(player.getHand())));
                 System.out.println(String.format("Total discard:  %s", showNamesInArray(player.getDiscard())));
                 System.out.println(String.format("Recruitements:  %s", showNamesInHash(player.getRecruitment())));
@@ -144,8 +145,8 @@ public class Match {
                         actions.controlAction(player);
                         break;
                     case 6:
-                        // actions.initiativeAction(player);
-                        // break;
+                        this.initiative = actions.initiativeAction(player, initiative);
+                        break;
                 }
             }
             catch(RuntimeException | UIException exc){

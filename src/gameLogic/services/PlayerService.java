@@ -21,8 +21,10 @@ public class PlayerService {
         ArrayList<Player> actualPlayers = new ArrayList<>();
         Player firstPlayer = new Player(userRepository.get(firstPlayerId));
         firstPlayer.setColor("\033[0;36m");
+        firstPlayer.setPlayerNumber(0);
         Player secondPlayer = new Player(userRepository.get(secondPlayerId));
         secondPlayer.setColor("\033[0;33m");
+        secondPlayer.setPlayerNumber(1);
         actualPlayers.add(firstPlayer);
         actualPlayers.add(secondPlayer);
         takeUnitsForSelectedCards(actualPlayers);
