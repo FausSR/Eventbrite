@@ -10,6 +10,6 @@ public class Archer extends Unit{
     }
 
     public Archer(int unitType){
-        super(unitType);
+        super(unitType, "Ar");
     }
 }

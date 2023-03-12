@@ -34,7 +34,7 @@ public class Lancer extends Unit{
     }
     
     public Lancer(int unitType){
-        super(unitType);
+        super(unitType, "La");
         this.alreadyMoved = false;
     }
 }

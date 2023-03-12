@@ -14,6 +14,7 @@ public class MainMenu {
             switch(option) {
                 case "1":
                     Match match = new Match(playerController, userController, boardController);
+                    match.setGame();
                     match.startGame();
                     break;
                 case "2":

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
-    ArrayList<Integer> hand, discard, bag, selectedCards;
+    ArrayList<Integer> discard, bag, selectedCards, hand;
     HashMap<Integer, Integer> recruitment;
     User user;
 
@@ -43,5 +43,25 @@ public class Player {
 
     public void setSelectedCards(ArrayList<Integer> selectedCards) {
         this.selectedCards = selectedCards;
+    }
+
+    public ArrayList<Integer> getHand(){
+        return this.hand;
+    }
+
+    public void setHand(ArrayList<Integer> hand){
+        this.hand = hand;
+    }
+
+    public ArrayList<Integer> getDiscard(){
+        return this.discard;
+    }
+
+    public void setDiscard(ArrayList<Integer> discard){
+        this.discard = discard;
+    }
+
+    public void addToDiscard(ArrayList<Integer> discard){
+        this.discard.addAll(discard);
     }
 }

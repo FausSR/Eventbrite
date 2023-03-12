@@ -15,4 +15,12 @@ public class PlayerController {
     public ArrayList<Player> setPlayers(int firstPlayerId, int secondPlayerId){
         return playerService.setPlayers(firstPlayerId, secondPlayerId);
     }
+
+    public void drawCards(Player player){
+        playerService.drawCards(player);
+    }
+
+    public Player fillBag(Player player){
+        return playerService.fillBag(player);
+    }
 }

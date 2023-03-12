@@ -15,8 +15,4 @@ public class UserService {
     public ArrayList<User> getAll(){
         return userRepository.getPlayers();
     }
-
-    public User get(int id){
-        return userRepository.get(id);
-    }
 }

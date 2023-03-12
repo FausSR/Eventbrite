@@ -4,6 +4,7 @@ import gameLogic.IUnit.IUnit;
 
 abstract class Unit implements IUnit{
     int id, unitType;
+    String shortName;
 
     public boolean canAttack(int firstX, int firstY, int secondX, int secondY, boolean newAction){
         boolean executeAction = false;
@@ -25,8 +26,13 @@ abstract class Unit implements IUnit{
         return this.unitType;
     }
 
-    public Unit(int unitType){
+    public String getShortName(){
+        return this.shortName;
+    }
+
+    public Unit(int unitType, String shortName){
         this.unitType = unitType;
+        this.shortName = shortName;
         this.id = (int)Math.random()*100000; //Fake id
     }
 }

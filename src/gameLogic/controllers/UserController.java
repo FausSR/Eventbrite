@@ -15,8 +15,4 @@ public class UserController {
     public ArrayList<User> getAll(){
         return userService.getAll();
     }
-
-    public User get(int id){
-        return userService.get(id);
-    }
 }

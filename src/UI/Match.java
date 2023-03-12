@@ -18,21 +18,26 @@ public class Match {
     ArrayList<Player> players;
     Board board;
     UnitInfo unitInfo;
+    int actualTurn, iniciative;
+    boolean endMatch;
 
     public Match(PlayerController playerController, UserController userController, BoardController boardController){
         this.playerController = playerController;
         this.boardController = boardController;
         this.userController = userController;
         this.unitInfo = new UnitInfo();
+        this.actualTurn = 1;
+        this.iniciative = 0;
+        this.endMatch = false;
     }
 
-    public void startGame(){
+    public void setGame(){
         SelectPlayer selectPlayer = new SelectPlayer(userController);
         ArrayList<User> selectedPlayers = selectPlayer.selectPlayers();
-        board = boardController.generateBoard();
         players = playerController.setPlayers(selectedPlayers.get(0).getId(), selectedPlayers.get(1).getId());
+        board = boardController.generateBoard();
         loadMap();
-        showBoard();
+        startGame();
     }
 
     public void showBoard(){
@@ -47,7 +52,7 @@ public class Match {
             System.out.print(String.format("|%s", i));
             for(int j = 0; j < board.getSize(); j++){
                 Zone zone = board.getZone(i, j);
-                if(zone.getUnit() != null) System.out.print("| " + unitInfo.getShortName(zone.getUnit().getUnitType()));
+                if(zone.getUnit() != null) System.out.print("| " + zone.getUnit().getShortName());
                 else if(zone.getIsControlZone() && zone.getOwner() != null) System.out.print(String.format("| %s ", getPlayerFaction(zone.getOwner())));
                 else if(zone.getIsControlZone()) System.out.print("| @ ");
                 else System.out.print("| - ");
@@ -71,5 +76,27 @@ public class Match {
         board.getZone(1,3).setIsControllZone(true);
         board.getZone(3,1).setIsControllZone(true);
         board.getZone(3,3).setIsControllZone(true);
+    }
+
+    public void startGame(){
+        while(!endMatch){
+            Player firstPlayer = players.get(this.iniciative);
+            Player secondPlayer = null;
+            if(this.iniciative == 0) secondPlayer = players.get(1);
+            else secondPlayer = players.get(0);
+            actionMenu(firstPlayer);
+            actionMenu(secondPlayer);
+        }
+    }
+
+    public void actionMenu(Player player){
+        ArrayList<Integer> actualHand = new ArrayList<>(player.getHand());
+        ArrayList<Integer> actualDiscard = new ArrayList<>();
+        ArrayList<Integer> totalDiscard = new ArrayList<>(player.getDiscard());
+        while(actualHand.size() > 0){
+            showBoard();
+            System.out.println(String.format("Hand %s", actualHand.toString()));
+            System.console().readLine();
+        }
     }
 }

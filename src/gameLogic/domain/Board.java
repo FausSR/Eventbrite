@@ -6,16 +6,9 @@ public class Board {
     ArrayList<ArrayList<Zone>> board;
     int size;
 
-    public Board(int totalColumns){
-        this.size = totalColumns;
-        board = new ArrayList<ArrayList<Zone>>();
-        for(int i = 0; i < totalColumns; i++){
-            ArrayList<Zone> row = new ArrayList<Zone>();
-            for(int j = 0; j < totalColumns; j++){
-                row.add(new Zone());
-            }
-            board.add(row);
-        }
+    public Board(int numberOfColumns){
+        this.size = numberOfColumns;
+        this.board = new ArrayList<ArrayList<Zone>>();
     }   
 
     public ArrayList<ArrayList<Zone>> getBoard(){
@@ -28,5 +21,9 @@ public class Board {
 
     public int getSize(){
         return this.size;
+    }
+
+    public void setRow(ArrayList<Zone> row) {
+        this.board.add(row);
     }
 }

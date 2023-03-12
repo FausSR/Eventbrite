@@ -1,6 +1,7 @@
 package gameLogic.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -10,24 +11,49 @@ import gameLogic.repository.UserRepository;
 
 public class PlayerService {
     UserRepository userRepository;
-    ArrayList<Player> actualPlayers;
     UnitInfo unitInfo;
 
     public PlayerService(UserRepository userRepository){
         this.userRepository = userRepository;
-        this.actualPlayers = new ArrayList<>();
     }
 
     public ArrayList<Player> setPlayers(int firstPlayerId, int secondPlayerId){
-        actualPlayers.add(new Player(userRepository.get(firstPlayerId)));
-        actualPlayers.add(new Player(userRepository.get(secondPlayerId)));
-        takeUnitsForBag();
-        prepareBagAndRecruitment();
-        drawCards();
+        ArrayList<Player> actualPlayers = new ArrayList<>();
+        Player firstPlayer = new Player(userRepository.get(firstPlayerId));
+        Player secondPlayer = new Player(userRepository.get(secondPlayerId));
+        actualPlayers.add(firstPlayer);
+        actualPlayers.add(secondPlayer);
+        takeUnitsForSelectedCards(actualPlayers);
+        prepareBagAndRecruitment(firstPlayer);
+        prepareBagAndRecruitment(secondPlayer);
+        drawCards(firstPlayer);
+        drawCards(secondPlayer);
         return actualPlayers;
     }
 
-    private void takeUnitsForBag(){
+    public void drawCards(Player player){
+        player.addToDiscard(player.getHand());
+        player.setHand(new ArrayList<Integer>());
+        int maxCardsPerTurn = 3;
+        ArrayList<Integer> bag = player.getBag();
+        Collections.shuffle(bag);
+        int totalIterations = 0;
+
+        if(bag.size() <= maxCardsPerTurn) totalIterations = bag.size();
+        else totalIterations = maxCardsPerTurn;
+
+        for (int i = totalIterations - 1; i >= 0; i--) {
+            player.getHand().add(bag.remove(i));
+        }
+    }
+
+    public Player fillBag(Player player){
+        player.setBag(player.getDiscard());
+        player.setDiscard(new ArrayList<Integer>());
+        return player;
+    }
+
+    private void takeUnitsForSelectedCards(ArrayList<Player> actualPlayers){
         unitInfo = new UnitInfo();
         Random random = new Random();
         ArrayList<Integer> unitList = new ArrayList<Integer>(unitInfo.unitGeneralInformation.keySet());
@@ -45,27 +71,14 @@ public class PlayerService {
         actualPlayers.get(1).setSelectedCards(playerTwoCards);
     }
 
-    private void prepareBagAndRecruitment(){
+    private void prepareBagAndRecruitment(Player actualPlayer){
         ArrayList<Integer> firstBag = new ArrayList<>();
-        HashMap<Integer, Integer> toRecruit = new HashMap<>();
-        for(Integer unitType: actualPlayers.get(0).getSelectedCards()){
+        HashMap<Integer, Integer> firstRecruitment = new HashMap<>();
+        for(Integer unitType: actualPlayer.getSelectedCards()){
             firstBag.add(unitType);
             firstBag.add(unitType);
-            toRecruit.put(unitType, (unitInfo.getAmount(unitType) - 2));
+            firstRecruitment.put(unitType, (unitInfo.getAmount(unitType) - 2));
         }
-        actualPlayers.get(0).setBag(firstBag);
-
-        ArrayList<Integer> secondBag = new ArrayList<>();
-        HashMap<Integer, Integer> secondRecruitment = new HashMap<>();
-        for(Integer unitType: actualPlayers.get(1).getSelectedCards()){
-            secondBag.add(unitType);
-            secondBag.add(unitType);
-            secondRecruitment.put(unitType, (unitInfo.getAmount(unitType) - 2));
-        }
+        actualPlayer.setBag(firstBag);
     }
-
-    private void drawCards(){
-        
-    }
-
 }
