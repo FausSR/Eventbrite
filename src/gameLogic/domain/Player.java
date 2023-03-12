@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class Player {
     ArrayList<Integer> discard, bag, selectedCards, hand;
+    String color;
     HashMap<Integer, Integer> recruitment;
     User user;
 
@@ -15,6 +16,15 @@ public class Player {
         this.bag = new ArrayList<>();
         this.selectedCards = new ArrayList<>();
         this.recruitment = new HashMap<>();
+        this.color = "\033[0;37m";
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     public User getUser(){

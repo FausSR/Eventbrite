@@ -59,15 +59,20 @@ public class UnitInfo {
     }
 
     public int getAmount(int unitType){
-        if(unitType == 99) return 1;
+        if(isRoyalUnit(unitType)) return 1;
         int value = unitGeneralInformation.get(unitType).totalAmount;
         return value;
     }
 
     public String getName(int unitType){
-        if(unitType == 99) return "Royal";
+        if(isRoyalUnit(unitType)) return "Royal";
         String value = unitGeneralInformation.get(unitType).name;
         return value;
+    }
+
+    public boolean isRoyalUnit(int unitType){
+        if(unitType == 99) return true;
+        return false;
     }
 
 }

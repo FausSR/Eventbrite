@@ -32,6 +32,14 @@ public class Zone {
         this.isControlZone = isControlZone;
     }
 
+    public int getColumn() {
+        return column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
     public Zone(int row, int column){
         this.isControlZone = false;
         this.row = row;

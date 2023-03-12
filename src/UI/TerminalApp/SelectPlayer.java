@@ -23,10 +23,10 @@ public class SelectPlayer {
             System.out.println("-----------------------------------------------");
             try{
                 option = System.console().readLine();
-                int value = Integer.parseInt(option);
-                if(value > 0 && value <= allPlayers.size()){
-                    selectedPlayers.add(allPlayers.get(value-1));
-                    allPlayers.remove(value-1);
+                int value = Integer.parseInt(option) - 1;
+                if(value >= 0 && value < allPlayers.size()){
+                    selectedPlayers.add(allPlayers.get(value));
+                    allPlayers.remove(value);
                 } 
             }catch (NumberFormatException ex){
                 System.out.print("Invalid input " + option);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import UI.Exception.UIException;
+import gameLogic.IUnit.IUnit;
 import gameLogic.Unit.UnitInfo;
 import gameLogic.controllers.PlayerController;
 import gameLogic.controllers.BoardController;
@@ -18,11 +19,13 @@ public class Match {
     PlayerController playerController;
     BoardController boardController;
     UserController userController;
+    Actions actions;
     ArrayList<Player> players;
     Board board;
     UnitInfo unitInfo;
     int actualTurn, iniciative;
     boolean endMatch;
+    String resetColor = "\033[0m";
 
     public Match(PlayerController playerController, UserController userController, BoardController boardController){
         this.playerController = playerController;
@@ -39,6 +42,7 @@ public class Match {
         ArrayList<User> selectedPlayers = selectPlayer.selectPlayers();
         players = playerController.setPlayers(selectedPlayers.get(0).getId(), selectedPlayers.get(1).getId());
         board = boardController.generateBoard();
+        this.actions = new Actions(this.board, this.unitInfo);
         loadMap();
         startGame();
     }
@@ -55,10 +59,14 @@ public class Match {
             System.out.print(String.format("|%s", i));
             for(int j = 0; j < board.getSize(); j++){
                 Zone zone = board.getZone(i, j);
-                if(zone.getUnit() != null) System.out.print("| " + zone.getUnit().getShortName());
-                else if(zone.getIsControlZone() && zone.getOwner() != null) System.out.print(String.format("| %s ", getPlayerFaction(zone.getOwner())));
-                else if(zone.getIsControlZone()) System.out.print("| @ ");
-                else System.out.print("| - ");
+                if(zone.getUnit() != null) 
+                    System.out.print(String.format("| %s%s%s", getUnitOwner(zone.getUnit()).getColor(), zone.getUnit().getShortName(), this.resetColor));
+                else if(zone.getIsControlZone() && zone.getOwner() != null) 
+                    System.out.print(String.format("| %s%s%s ", zone.getOwner().getColor(), getPlayerFaction(zone.getOwner()), this.resetColor));
+                else if(zone.getIsControlZone()) 
+                    System.out.print("| @ ");
+                else 
+                    System.out.print("| - ");
             }
             System.out.println();
         }
@@ -68,6 +76,11 @@ public class Match {
     private String getPlayerFaction(Player player){
         if(player.getUser().getId() == players.get(0).getUser().getId()) return "W";
         return "C";
+    }
+
+    private Player getUnitOwner(IUnit unit){
+        if(unit.getUserId() == players.get(0).getUser().getId()) return players.get(0);
+        return players.get(1);
     }
 
     private void loadMap(){
@@ -96,6 +109,7 @@ public class Match {
         while(player.getHand().size() > 0){
             try{
                 showBoard();
+                System.out.println(String.format("%s-----------%s-----------%s", player.getColor(), player.getUser().getName(), this.resetColor));
                 System.out.println(String.format("Hand: %s", showNamesInArray(player.getHand())));
                 System.out.println(String.format("Total discard:  %s", showNamesInArray(player.getDiscard())));
                 System.out.println(String.format("Recruitements:  %s", showNamesInHash(player.getRecruitment())));
@@ -114,11 +128,13 @@ public class Match {
                     case 2:
                         // recruitAction();
                     case 3:
-                        // placeAction(player);
+                        actions.placeAction(player);
+                        break;
                     case 4:
                         // attackAction();
                     case 5:
-                        controlAction(player);
+                        actions.controlAction(player);
+                        break;
                     case 6:
                         // initiativeAction();
                 }
@@ -144,44 +160,5 @@ public class Match {
         return map.entrySet().stream()
                 .map(x -> String.format("%s = %s", unitInfo.getName(x.getKey()), x.getValue()))
                 .collect(Collectors.joining(", ", "", ""));
-    }
-
-    private void showNamesInTerminal(ArrayList<Integer> list){
-        for(int i = 0; i < list.size(); i++) System.out.println(String.format("%s- %s", i + 1, unitInfo.getName(list.get(i))));
-    }
-
-    private void controlAction(Player player) throws UIException{
-        Zone actualPosition = askForPosition();
-
-        boolean positionIsControlPoint = actualPosition.getIsControlZone();
-        boolean positionIsFreeOrNotMine = (actualPosition.getOwner() == null || actualPosition.getOwner() != player);
-        boolean positionHaveAUnitOfMine = (actualPosition.getUnit() != null && actualPosition.getUnit().getUserId() == player.getUser().getId());
-        
-        if(!positionIsControlPoint || !positionIsFreeOrNotMine || !positionHaveAUnitOfMine) 
-            throw new UIException("Invalid position to capture.");
-
-        askToDiscardAnyCard(player);
-
-        System.out.println("Correct action, press enter to continue.");
-        System.console().readLine();
-    }
-
-    private Zone askForPosition() throws RuntimeException{
-        System.out.println("Position (row column)");
-        System.out.println("Example: 1 2");
-        Zone zone = null;
-        String option = System.console().readLine().replaceAll("\\s+","");
-        int row = Integer.parseInt(String.valueOf(option.charAt(0)));
-        int column = Integer.parseInt(String.valueOf(option.charAt(1)));
-        zone = board.getZone(row, column);
-        return zone;
-    }
-
-    private void askToDiscardAnyCard(Player player){
-        System.out.println("Discard card:");
-        showNamesInTerminal(player.getHand());
-        String option = System.console().readLine();
-        int index = Integer.parseInt(option);
-        player.getHand().remove(index);
     }
 }

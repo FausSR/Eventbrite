@@ -37,6 +37,7 @@ abstract class Unit implements IUnit{
     public Unit(int unitType, String shortName, int userId){
         this.unitType = unitType;
         this.shortName = shortName;
+        this.userId = userId;
         this.id = (int)Math.random()*100000; //Fake id
     }
 }
