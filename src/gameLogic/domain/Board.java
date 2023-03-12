@@ -2,28 +2,28 @@ package gameLogic.domain;
 
 import java.util.ArrayList;
 
-public class Table {
-    ArrayList<ArrayList<Zone>> table;
+public class Board {
+    ArrayList<ArrayList<Zone>> board;
     int size;
 
-    public Table(int totalColumns){
+    public Board(int totalColumns){
         this.size = totalColumns;
-        table = new ArrayList<ArrayList<Zone>>();
+        board = new ArrayList<ArrayList<Zone>>();
         for(int i = 0; i < totalColumns; i++){
             ArrayList<Zone> row = new ArrayList<Zone>();
             for(int j = 0; j < totalColumns; j++){
                 row.add(new Zone());
             }
-            table.add(row);
+            board.add(row);
         }
     }   
 
-    public ArrayList<ArrayList<Zone>> getTable(){
-        return table;
+    public ArrayList<ArrayList<Zone>> getBoard(){
+        return board;
     }
 
     public Zone getZone(int row, int column){
-        return table.get(row).get(column);
+        return board.get(row).get(column);
     }
 
     public int getSize(){

@@ -3,31 +3,31 @@ package gameLogic.controllers;
 import java.util.ArrayList;
 
 import gameLogic.Unit.UnitInfo;
-import gameLogic.domain.Table;
+import gameLogic.domain.Board;
 import gameLogic.domain.User;
-import gameLogic.services.TableService;
+import gameLogic.services.BoardService;
 
-public class TableController {
+public class BoardController {
     ArrayList<User> actualPlayers;
-    TableService tableService;
+    BoardService boardService;
     int actualTurn, iniciative;
     UnitInfo unitInfo;
-    Table table;
+    Board board;
 
-    public TableController(TableService tableService){
+    public BoardController(BoardService boardService){
         this.actualTurn = 0;
         this.iniciative = 0;
         this.actualPlayers = new ArrayList<User>();
-        this.tableService = tableService;
+        this.boardService = boardService;
     }
 
-    public Table generateTable(){
-        table = tableService.create(5);
-        return table;
+    public Board generateBoard(){
+        board = boardService.create(5);
+        return board;
     }
 
-    public Table getTable(){
-        return table;
+    public Board getBoard(){
+        return board;
     }
 
     public ArrayList<User> getActualPlayers(){
