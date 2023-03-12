@@ -32,8 +32,6 @@ public class PlayerService {
         takeUnitsForSelectedCards(actualPlayers);
         prepareBagAndRecruitment(firstPlayer);
         prepareBagAndRecruitment(secondPlayer);
-        drawCards(firstPlayer);
-        drawCards(secondPlayer);
         return actualPlayers;
     }
 

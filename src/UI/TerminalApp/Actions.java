@@ -58,8 +58,7 @@ public class Actions {
         player.addDeployedUnits();
     }
 
-    //TODO: Check if recruitment type is available
-    public void recruitAction(Player player){
+    public void recruitAction(Player player) throws UIException{
         System.out.println("Type the recruit number of the unit you want in your bag.");
         System.out.println("(Recruit number - Unit name - Available cards).");
         for (Map.Entry<Integer, Integer> set : player.getRecruitment().entrySet()) {
@@ -70,6 +69,7 @@ public class Actions {
         }
         String option = System.console().readLine();
         int selectedUnit = Integer.parseInt(option);
+        if(!player.getRecruitment().containsKey(selectedUnit)) throw new UIException("That unit is not available to recruit");
 
         int indexOfUnit = askToDiscard(player);
         int cardToDiscard = player.getHand().get(indexOfUnit);

@@ -102,12 +102,12 @@ public class Match {
             Player secondPlayer = null;
             if(this.initiative == 0) secondPlayer = players.get(1);
             else secondPlayer = players.get(0);
-            actionMenu(firstPlayer, secondPlayer);
-            actionMenu(secondPlayer, firstPlayer);
             playerController.drawCards(firstPlayer);
             playerController.drawCards(secondPlayer);
-            if(firstPlayer.getHand().size() == 0) playerController.fillBag(firstPlayer);
-            if(secondPlayer.getHand().size() == 0) playerController.fillBag(secondPlayer);
+            actionMenu(firstPlayer, secondPlayer);
+            actionMenu(secondPlayer, firstPlayer);
+            if(firstPlayer.getBag().size() == 0) playerController.fillBag(firstPlayer);
+            if(secondPlayer.getBag().size() == 0) playerController.fillBag(secondPlayer);
         }
     }
 
