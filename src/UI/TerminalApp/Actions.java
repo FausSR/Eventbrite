@@ -134,7 +134,7 @@ public class Actions {
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
 
-        if(actualunitType == LANCER_UNIT_TYPE)
+        if(actualunitType == BERSERKER_UNIT_TYPE)
             berserkerSpecialAttack(player, actualPosition, actualTurn);
     }
 
@@ -225,12 +225,12 @@ public class Actions {
 
     private void berserkerSpecialAttack(Player player, Zone actualPosition, int actualTurn) throws UIException{
         String option = "";
-        while(option != "N") {
+        while(!option.equals("N")) {
             try{
                 System.out.println("If want to attack again type Y.");
                 System.out.println("If not, type any N.");
                 option = System.console().readLine();
-                if(option == "Y") {
+                if(option.equals("Y")) {
                     Zone attackPosition = askForPosition(false);
                     if(attackPosition.getUnit() == null) throw new UIException("Theres no unit there.");
                     if(checkIfUnitIsMine(attackPosition, player)) throw new UIException("Can't attack your own units.");
