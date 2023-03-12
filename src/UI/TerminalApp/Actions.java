@@ -13,6 +13,7 @@ public class Actions {
     Board board;
     UnitInfo unitInfo;
     int LANCER_UNIT_TYPE = 2;
+    int BERSERKER_UNIT_TYPE = 4;
 
     public Actions(Board board, UnitInfo unitInfo){
         this.unitInfo = unitInfo;
@@ -20,7 +21,7 @@ public class Actions {
     }
     
     public void controlAction(Player player) throws UIException{
-        Zone actualPosition = askForPosition();
+        Zone actualPosition = askForPosition(true);
 
         boolean positionIsControlPoint = actualPosition.getIsControlZone();
         boolean positionIsFreeOrNotMine = (actualPosition.getOwner() == null || actualPosition.getOwner() != player);
@@ -39,7 +40,7 @@ public class Actions {
     }
 
     public void placeAction(Player player) throws UIException{
-        Zone actualPosition = askForPosition();
+        Zone actualPosition = askForPosition(true);
         if(actualPosition.getUnit() != null) throw new UIException("Theres another unit in that position.");
         if(!checkControlPointAdjacent(actualPosition, player)) throw new UIException("Theres no adjacent control zone of your domain.");
         
@@ -77,11 +78,11 @@ public class Actions {
 
     public void moveAction(Player player, int actualTurn) throws UIException{
         System.out.println("Select unit to move.");
-        Zone actualPosition = askForPosition();
+        Zone actualPosition = askForPosition(true);
         if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
 
         System.out.println("Select where to move.");
-        Zone newPosition = askForPosition();
+        Zone newPosition = askForPosition(true);
         if(newPosition.getUnit() != null) throw new UIException("Theres another unit there.");
 
         int indexOfUnit = askToDiscard(player);
@@ -104,18 +105,19 @@ public class Actions {
 
     public void attackAction(Player player, int actualTurn) throws UIException{
         System.out.println("Select unit that attack.");
-        Zone actualPosition = askForPosition();
+        Zone actualPosition = askForPosition(true);
         if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
+        int actualunitType = actualPosition.getUnit().getUnitType();
 
         System.out.println("Select unit to attack.");
-        Zone attackPosition = askForPosition();
+        Zone attackPosition = askForPosition(true);
         if(attackPosition.getUnit() == null) throw new UIException("Theres no unit there.");
         if(checkIfUnitIsMine(attackPosition, player)) throw new UIException("Can't attack your own units.");
 
         int indexOfUnit = askToDiscard(player);
         int unitToPlace = player.getHand().get(indexOfUnit);
         checkRoyalInvalidAction(unitToPlace);
-        if(actualPosition.getUnit().getUnitType() != unitToPlace) throw new UIException("The card you are trying to dicard is a different unit.");
+        if(actualunitType != unitToPlace) throw new UIException("The card you are trying to dicard is a different unit.");
 
         if(!actualPosition.getUnit().canAttack(
             actualPosition.getRow(), 
@@ -124,38 +126,16 @@ public class Actions {
             attackPosition.getColumn(), 
             actualTurn)) throw new UIException("That unit can't perform that action.");
         
-        if(actualPosition.getUnit().getUnitType() == LANCER_UNIT_TYPE){
-            int minValue = actualPosition.getRow();
-            int maxValue = attackPosition.getRow();
-            boolean rowMovement = false;
-            Zone newPosition = null;
-            if(actualPosition.getRow() == attackPosition.getRow()){
-                rowMovement = true;
-                minValue = actualPosition.getColumn();
-                maxValue = attackPosition.getColumn();
-            }
-            if(maxValue < minValue){
-                int savedValue = maxValue;
-                maxValue = minValue;
-                minValue = savedValue;
-            }
-            for(int i = minValue + 1; i < maxValue; i++){
-                Zone checkZone = null;
-                if(rowMovement)
-                    checkZone = board.getZone(actualPosition.getRow(), i);
-                else 
-                    checkZone = board.getZone(i, actualPosition.getColumn());
-                if(checkZone.getUnit() != null) throw new UIException("Lancer need free space to perform attack");
-            }
-            if(rowMovement) newPosition = board.getZone(actualPosition.getRow(), maxValue - 1);
-            else newPosition = board.getZone(maxValue - 1, actualPosition.getColumn());
-            newPosition.setUnit(actualPosition.getUnit());
-            actualPosition.setUnit(null);
-        }
+        
+        if(actualunitType == LANCER_UNIT_TYPE)
+            lancerSpecialAttack(player, actualPosition, attackPosition);
 
         attackPosition.setUnit(null);
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
+
+        if(actualunitType == LANCER_UNIT_TYPE)
+            berserkerSpecialAttack(player, actualPosition, actualTurn);
     }
 
     private boolean checkIfUnitIsMine(Zone zone, Player player){
@@ -166,13 +146,13 @@ public class Actions {
         if(unitInfo.isRoyalUnit(unitToPlace)) throw new UIException("Cant use royal card for that action.");
     }
 
-    private Zone askForPosition(){
+    private Zone askForPosition(boolean showMessages){
         System.out.println("Position (row column)");
         System.out.println("Example: 1 2");
         Zone zone = null;
-        String option = System.console().readLine().replaceAll("\\s+","");
+        String option = System.console().readLine();
         int row = Integer.parseInt(String.valueOf(option.charAt(0)));
-        int column = Integer.parseInt(String.valueOf(option.charAt(1)));
+        int column = Integer.parseInt(String.valueOf(option.charAt(2)));
         zone = board.getZone(row, column);
         return zone;
     }
@@ -212,5 +192,63 @@ public class Actions {
             }
         }
         return adjacentControlPoint;
+    }
+
+    private void lancerSpecialAttack(Player player, Zone actualPosition, Zone attackPosition) throws UIException{
+        int minValue = actualPosition.getRow();
+        int maxValue = attackPosition.getRow();
+        boolean rowMovement = false;
+        Zone newPosition = null;
+        if(actualPosition.getRow() == attackPosition.getRow()){
+            rowMovement = true;
+            minValue = actualPosition.getColumn();
+            maxValue = attackPosition.getColumn();
+        }
+        if(maxValue < minValue){
+            int savedValue = maxValue;
+            maxValue = minValue;
+            minValue = savedValue;
+        }
+        for(int i = minValue + 1; i < maxValue; i++){
+            Zone checkZone = null;
+            if(rowMovement)
+                checkZone = board.getZone(actualPosition.getRow(), i);
+            else 
+                checkZone = board.getZone(i, actualPosition.getColumn());
+            if(checkZone.getUnit() != null) throw new UIException("Lancer need free space to perform attack");
+        }
+        if(rowMovement) newPosition = board.getZone(actualPosition.getRow(), maxValue - 1);
+        else newPosition = board.getZone(maxValue - 1, actualPosition.getColumn());
+        newPosition.setUnit(actualPosition.getUnit());
+        actualPosition.setUnit(null);
+    }
+
+    private void berserkerSpecialAttack(Player player, Zone actualPosition, int actualTurn) throws UIException{
+        String option = "";
+        while(option != "N") {
+            try{
+                System.out.println("If want to attack again type Y.");
+                System.out.println("If not, type any N.");
+                option = System.console().readLine();
+                if(option == "Y") {
+                    Zone attackPosition = askForPosition(false);
+                    if(attackPosition.getUnit() == null) throw new UIException("Theres no unit there.");
+                    if(checkIfUnitIsMine(attackPosition, player)) throw new UIException("Can't attack your own units.");
+    
+                    if(!actualPosition.getUnit().canAttack(
+                        actualPosition.getRow(), 
+                        actualPosition.getColumn(), 
+                        attackPosition.getRow(), 
+                        attackPosition.getColumn(), 
+                        actualTurn)) throw new UIException("That unit can't perform that action.");
+    
+                    attackPosition.setUnit(null);
+                    option = "N";
+                }
+            }
+            catch(UIException exc){
+                System.out.println(exc.getMessage());
+            }
+        }
     }
 }
