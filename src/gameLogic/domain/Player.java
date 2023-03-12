@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Player {
     ArrayList<Integer> discard, bag, selectedCards, hand;
     String color;
-    int playerNumber, controlPoints;
+    int playerNumber, controlPoints, deployedUnits;
     HashMap<Integer, Integer> recruitment;
     User user;
 
@@ -18,7 +18,8 @@ public class Player {
         this.selectedCards = new ArrayList<>();
         this.recruitment = new HashMap<>();
         this.color = "\033[0;37m";
-        this.controlPoints = 4;
+        this.controlPoints = 0;
+        this.deployedUnits = 0;
     }
 
     public void setControlPoints(int controlPoints) {
@@ -35,6 +36,22 @@ public class Player {
 
     public void addControlPoint(){
         this.controlPoints++;
+    }
+
+    public void setDeployedUnits(int deployedUnits) {
+        this.deployedUnits = deployedUnits;
+    }
+
+    public int getDeployedUnits() {
+        return deployedUnits;
+    }
+
+    public void substractDeployedUnits(){
+        this.deployedUnits--;
+    }
+
+    public void addDeployedUnits(){
+        this.deployedUnits++;
     }
 
     public void setColor(String color) {

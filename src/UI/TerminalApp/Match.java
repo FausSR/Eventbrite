@@ -1,5 +1,6 @@
 package UI.TerminalApp;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class Match {
     int actualTurn, initiative;
     boolean endMatch;
     String RESET_COLOR = "\033[0m";
+    int CONTROL_POINTS_TO_WIN = 4;
 
     public Match(PlayerController playerController, UserController userController, BoardController boardController){
         this.playerController = playerController;
@@ -139,7 +141,7 @@ public class Match {
                         actions.placeAction(player);
                         break;
                     case 4:
-                        actions.attackAction(player, actualTurn);
+                        actions.attackAction(player, otherPlayer, actualTurn);
                         break;
                     case 5:
                         actions.controlAction(player, otherPlayer);
@@ -157,6 +159,7 @@ public class Match {
                 System.out.println("Press enter to continue.");
                 System.console().readLine();
             }
+            checkIfWin(player, otherPlayer);
         }
     }
 
@@ -170,5 +173,28 @@ public class Match {
         return map.entrySet().stream()
                 .map(x -> String.format("%s = %s", unitInfo.getName(x.getKey()), x.getValue()))
                 .collect(Collectors.joining(", ", "", ""));
+    }
+
+    private void checkIfWin(Player player, Player otherPlayer){
+        if(player.getControlPoints() == this.CONTROL_POINTS_TO_WIN ||
+                (otherPlayer.getDeployedUnits() == 0 &&
+                (otherPlayer.getBag().size() == 0 || 
+                    (otherPlayer.getBag().size() == 1 && 
+                    unitInfo.isRoyalUnit(otherPlayer.getBag().get(0)))) &&
+                (otherPlayer.getHand().size() == 0 || 
+                    (otherPlayer.getHand().size() == 1 && 
+                    unitInfo.isRoyalUnit(otherPlayer.getHand().get(0)))) &&
+                (otherPlayer.getDiscard().size() == 0 || 
+                    (otherPlayer.getHand().size() == 1 && 
+                    unitInfo.isRoyalUnit(otherPlayer.getHand().get(0)))) &&
+                otherPlayer.getRecruitment().isEmpty())) 
+            {
+                endMatch = true;
+                player.getUser().addVictories();
+                player.getUser().setLastVictory(LocalDate.now());
+                System.out.println(String.format("Congratulations %s you win!", player.getUser().getName()));
+                System.out.println("Press enter to continue.");
+                System.console().readLine();
+            }
     }
 }

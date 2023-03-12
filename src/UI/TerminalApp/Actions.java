@@ -55,6 +55,7 @@ public class Actions {
         actualPosition.setUnit(unitInfo.unitConstructor(unitToPlace, player.getUser().getId()));
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
+        player.addDeployedUnits();
     }
 
     //TODO: Check if recruitment type is available
@@ -107,7 +108,7 @@ public class Actions {
         player.getDiscard().add(unitToPlace);
     }
 
-    public void attackAction(Player player, int actualTurn) throws UIException{
+    public void attackAction(Player player, Player otherPlayer, int actualTurn) throws UIException{
         System.out.println("Select unit that attack.");
         Zone actualPosition = askForPosition(true);
         if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
@@ -137,9 +138,10 @@ public class Actions {
         attackPosition.setUnit(null);
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
+        otherPlayer.substractControlPoint();
 
         if(actualunitType == BERSERKER_UNIT_TYPE)
-            berserkerSpecialAttack(player, actualPosition, actualTurn);
+            berserkerSpecialAttack(player, otherPlayer, actualPosition, actualTurn);
     }
 
     public int initiativeAction(Player player, int initiative) throws UIException{
@@ -236,7 +238,7 @@ public class Actions {
         actualPosition.setUnit(null);
     }
 
-    private void berserkerSpecialAttack(Player player, Zone actualPosition, int actualTurn) throws UIException{
+    private void berserkerSpecialAttack(Player player, Player otherPlayer, Zone actualPosition, int actualTurn) throws UIException{
         String option = "";
         while(!option.equals("N")) {
             try{
@@ -256,6 +258,7 @@ public class Actions {
                         actualTurn)) throw new UIException("That unit can't perform that action.");
     
                     attackPosition.setUnit(null);
+                    otherPlayer.substractControlPoint();
                     option = "N";
                 }
             }
