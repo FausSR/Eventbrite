@@ -6,7 +6,7 @@ public class Berserker extends Unit{
     boolean canAttack;
 
     @Override
-    public boolean canMove(int firstX, int firstY, int secondX, int secondY, boolean newTurn){
+    public boolean canMove(int firstX, int firstY, int secondX, int secondY, int actualTurn){
         boolean executeAction = false;
         double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
         double maxDiagonalDistance = Math.sqrt(2);
@@ -19,7 +19,7 @@ public class Berserker extends Unit{
     }
 
     @Override
-    public boolean canAttack(int firstX, int firstY, int secondX, int secondY, boolean newTurn) {
+    public boolean canAttack(int firstX, int firstY, int secondX, int secondY, int actualTurn) {
         if(!this.canAttack && !this.attackedBefore) this.canAttack = true;
 
         boolean executeAction = false;

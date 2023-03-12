@@ -12,6 +12,7 @@ import gameLogic.domain.Zone;
 public class Actions {
     Board board;
     UnitInfo unitInfo;
+    int LANCER_UNIT_TYPE = 2;
 
     public Actions(Board board, UnitInfo unitInfo){
         this.unitInfo = unitInfo;
@@ -51,6 +52,7 @@ public class Actions {
         player.getDiscard().add(unitToPlace);
     }
 
+    //TODO: Check if recruitment type is available
     public void recruitAction(Player player){
         System.out.println("Type the recruit number of the unit you want in your bag.");
         System.out.println("(Recruit number - Unit name - Available cards).");
@@ -73,11 +75,12 @@ public class Actions {
         else player.getRecruitment().put(selectedUnit, player.getRecruitment().get(selectedUnit) -1);
     }
 
-    public void moveAction(Player player, boolean firstAction) throws UIException{
+    public void moveAction(Player player, int actualTurn) throws UIException{
         System.out.println("Select unit to move.");
         Zone actualPosition = askForPosition();
         if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
 
+        System.out.println("Select where to move.");
         Zone newPosition = askForPosition();
         if(newPosition.getUnit() != null) throw new UIException("Theres another unit there.");
 
@@ -91,10 +94,66 @@ public class Actions {
             actualPosition.getColumn(), 
             newPosition.getRow(), 
             newPosition.getColumn(), 
-            firstAction)) throw new UIException("That unit can't perform that action.");
+            actualTurn)) throw new UIException("That unit can't perform that action.");
 
         newPosition.setUnit(actualPosition.getUnit());
         actualPosition.setUnit(null);
+        player.getHand().remove(indexOfUnit);
+        player.getDiscard().add(unitToPlace);
+    }
+
+    public void attackAction(Player player, int actualTurn) throws UIException{
+        System.out.println("Select unit that attack.");
+        Zone actualPosition = askForPosition();
+        if(!checkIfUnitIsMine(actualPosition, player)) throw new UIException("That unit is not yours.");
+
+        System.out.println("Select unit to attack.");
+        Zone attackPosition = askForPosition();
+        if(attackPosition.getUnit() == null) throw new UIException("Theres no unit there.");
+        if(checkIfUnitIsMine(attackPosition, player)) throw new UIException("Can't attack your own units.");
+
+        int indexOfUnit = askToDiscard(player);
+        int unitToPlace = player.getHand().get(indexOfUnit);
+        checkRoyalInvalidAction(unitToPlace);
+        if(actualPosition.getUnit().getUnitType() != unitToPlace) throw new UIException("The card you are trying to dicard is a different unit.");
+
+        if(!actualPosition.getUnit().canAttack(
+            actualPosition.getRow(), 
+            actualPosition.getColumn(), 
+            attackPosition.getRow(), 
+            attackPosition.getColumn(), 
+            actualTurn)) throw new UIException("That unit can't perform that action.");
+        
+        if(actualPosition.getUnit().getUnitType() == LANCER_UNIT_TYPE){
+            int minValue = actualPosition.getRow();
+            int maxValue = attackPosition.getRow();
+            boolean rowMovement = false;
+            Zone newPosition = null;
+            if(actualPosition.getRow() == attackPosition.getRow()){
+                rowMovement = true;
+                minValue = actualPosition.getColumn();
+                maxValue = attackPosition.getColumn();
+            }
+            if(maxValue < minValue){
+                int savedValue = maxValue;
+                maxValue = minValue;
+                minValue = savedValue;
+            }
+            for(int i = minValue + 1; i < maxValue; i++){
+                Zone checkZone = null;
+                if(rowMovement)
+                    checkZone = board.getZone(actualPosition.getRow(), i);
+                else 
+                    checkZone = board.getZone(i, actualPosition.getColumn());
+                if(checkZone.getUnit() != null) throw new UIException("Lancer need free space to perform attack");
+            }
+            if(rowMovement) newPosition = board.getZone(actualPosition.getRow(), maxValue - 1);
+            else newPosition = board.getZone(maxValue - 1, actualPosition.getColumn());
+            newPosition.setUnit(actualPosition.getUnit());
+            actualPosition.setUnit(null);
+        }
+
+        attackPosition.setUnit(null);
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
     }

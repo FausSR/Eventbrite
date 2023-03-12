@@ -6,7 +6,7 @@ abstract class Unit implements IUnit{
     int id, userId, unitType;
     String shortName;
 
-    public boolean canAttack(int firstX, int firstY, int secondX, int secondY, boolean newAction){
+    public boolean canAttack(int firstX, int firstY, int secondX, int secondY, int actualTurn){
         boolean executeAction = false;
         double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
         double maxDiagonalDistance = Math.sqrt(2);
@@ -14,7 +14,7 @@ abstract class Unit implements IUnit{
         return executeAction;
     }
 
-    public boolean canMove(int firstX, int firstY, int secondX, int secondY, boolean newAction){
+    public boolean canMove(int firstX, int firstY, int secondX, int secondY, int actualTurn){
         boolean executeAction = false;
         double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
         double maxDiagonalDistance = Math.sqrt(2);

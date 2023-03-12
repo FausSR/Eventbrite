@@ -110,7 +110,7 @@ public class Match {
     }
 
     public void actionMenu(Player player){
-        int actionsExecuted = 0;
+        this.actualTurn++;
         while(player.getHand().size() > 0){
             try{
                 showBoard();
@@ -129,7 +129,7 @@ public class Match {
                 int value = Integer.parseInt(option);
                 switch(value){
                     case 1:
-                        actions.moveAction(player, actionsExecuted == 0);
+                        actions.moveAction(player, actualTurn);
                         break;
                     case 2:
                         actions.recruitAction(player);
@@ -138,8 +138,8 @@ public class Match {
                         actions.placeAction(player);
                         break;
                     case 4:
-                        // actions.attackAction(player);
-                        // break;
+                        actions.attackAction(player, actualTurn);
+                        break;
                     case 5:
                         actions.controlAction(player);
                         break;
@@ -147,7 +147,6 @@ public class Match {
                         // actions.initiativeAction(player);
                         // break;
                 }
-                actionsExecuted++;
             }
             catch(RuntimeException | UIException exc){
                 if(exc instanceof UIException)

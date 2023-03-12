@@ -3,9 +3,10 @@ package gameLogic.Unit;
 public class Lancer extends Unit{
 
     boolean alreadyMoved;
+    int actualTurn;
 
     @Override
-    public boolean canMove(int firstX, int firstY, int secondX, int secondY, boolean newTurn){
+    public boolean canMove(int firstX, int firstY, int secondX, int secondY, int actualTurn){
         boolean executeAction = false;
         double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
         double maxDiagonalDistance = Math.sqrt(2);
@@ -17,8 +18,9 @@ public class Lancer extends Unit{
     }
 
     @Override
-    public boolean canAttack(int firstX, int firstY, int secondX, int secondY, boolean newTurn) {
-        if(newTurn) this.alreadyMoved = false; // I suppose that if you dont move in the same turn, you cant attack adjacent
+    public boolean canAttack(int firstX, int firstY, int secondX, int secondY, int actualTurn) {
+        if(this.actualTurn != actualTurn) this.alreadyMoved = false; // I suppose that if you dont move in the same turn, you cant attack adjacent
+        this.actualTurn = actualTurn;
         boolean executeAction = false;
         double flatNumber = Math.sqrt(Math.pow((firstX-secondX), 2) + Math.pow((firstY-secondY), 2));
 
