@@ -1,11 +1,13 @@
-package gameLogic.Table;
+package gameLogic.domain;
 
 import java.util.ArrayList;
 
 public class Table {
     ArrayList<ArrayList<Zone>> table;
+    int size;
 
     public Table(int totalColumns){
+        this.size = totalColumns;
         table = new ArrayList<ArrayList<Zone>>();
         for(int i = 0; i < totalColumns; i++){
             ArrayList<Zone> row = new ArrayList<Zone>();
@@ -20,7 +22,11 @@ public class Table {
         return table;
     }
 
-    public Zone getCell(int row, int column){
+    public Zone getZone(int row, int column){
         return table.get(row).get(column);
+    }
+
+    public int getSize(){
+        return this.size;
     }
 }

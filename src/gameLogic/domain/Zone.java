@@ -1,7 +1,6 @@
-package gameLogic.Table;
+package gameLogic.domain;
 
 import gameLogic.IUnit.IUnit;
-import gameLogic.domain.Player;
 
 public class Zone {
     IUnit unit;

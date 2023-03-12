@@ -21,6 +21,10 @@ abstract class Unit implements IUnit{
         return executeAction;
     }
 
+    public int getUnitType(){
+        return this.unitType;
+    }
+
     public Unit(int unitType){
         this.unitType = unitType;
         this.id = (int)Math.random()*100000; //Fake id

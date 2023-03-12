@@ -2,8 +2,8 @@ package gameLogic.controllers;
 
 import java.util.ArrayList;
 
-import gameLogic.Table.Table;
 import gameLogic.Unit.UnitInfo;
+import gameLogic.domain.Table;
 import gameLogic.domain.User;
 import gameLogic.services.TableService;
 

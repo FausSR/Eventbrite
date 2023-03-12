@@ -16,6 +16,10 @@ public class Player {
         this.selectedCards = new ArrayList<>();
         this.recruitment = new HashMap<>();
     }
+
+    public User getUser(){
+        return this.user;
+    }
     
     public ArrayList<Integer> getBag() {
         return this.bag;
