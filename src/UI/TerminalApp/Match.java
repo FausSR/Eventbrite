@@ -102,6 +102,10 @@ public class Match {
             else secondPlayer = players.get(0);
             actionMenu(firstPlayer);
             actionMenu(secondPlayer);
+            playerController.drawCards(firstPlayer);
+            playerController.drawCards(secondPlayer);
+            if(firstPlayer.getHand().size() == 0) playerController.fillBag(firstPlayer);
+            if(secondPlayer.getHand().size() == 0) playerController.fillBag(secondPlayer);
         }
     }
 
@@ -128,8 +132,8 @@ public class Match {
                         actions.moveAction(player, actionsExecuted == 0);
                         break;
                     case 2:
-                        // actions.recruitAction(player);
-                        // break;
+                        actions.recruitAction(player);
+                        break;
                     case 3:
                         actions.placeAction(player);
                         break;

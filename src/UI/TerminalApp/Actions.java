@@ -1,6 +1,7 @@
 package UI.TerminalApp;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import UI.Exception.UIException;
 import gameLogic.Unit.UnitInfo;
@@ -48,6 +49,28 @@ public class Actions {
         actualPosition.setUnit(unitInfo.unitConstructor(unitToPlace, player.getUser().getId()));
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(unitToPlace);
+    }
+
+    public void recruitAction(Player player){
+        System.out.println("Type the recruit number of the unit you want in your bag.");
+        System.out.println("(Recruit number - Unit name - Available cards).");
+        for (Map.Entry<Integer, Integer> set : player.getRecruitment().entrySet()) {
+            // Printing all elements of a Map
+            System.out.println(String.format(
+                "%s - %s - %s", set.getKey(), unitInfo.getName(set.getKey()), set.getValue()
+            ));
+        }
+        String option = System.console().readLine();
+        int selectedUnit = Integer.parseInt(option);
+
+        int indexOfUnit = askToDiscard(player);
+        int cardToDiscard = player.getHand().get(indexOfUnit);
+
+        player.getHand().remove(indexOfUnit);
+        player.getDiscard().add(cardToDiscard);
+        player.getDiscard().add(selectedUnit);
+        if(player.getRecruitment().get(selectedUnit) -1 == 0) player.getRecruitment().remove(selectedUnit, 1);
+        else player.getRecruitment().put(selectedUnit, player.getRecruitment().get(selectedUnit) -1);
     }
 
     public void moveAction(Player player, boolean firstAction) throws UIException{
