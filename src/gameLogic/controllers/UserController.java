@@ -2,13 +2,14 @@ package gameLogic.controllers;
 
 import java.util.ArrayList;
 
+import gameLogic.IControllers.IUserController;
+import gameLogic.IServices.IUserService;
 import gameLogic.domain.User;
-import gameLogic.services.UserService;
 
-public class UserController {
-    UserService userService;
+public class UserController implements IUserController{
+    IUserService userService;
 
-    public UserController(UserService userService){
+    public UserController(IUserService userService){
         this.userService = userService;
     }
 

@@ -1,13 +1,13 @@
-package UI.TerminalApp;
+package ui.terminalApp;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import UI.Exception.UIException;
-import gameLogic.Unit.UnitInfo;
 import gameLogic.domain.Board;
 import gameLogic.domain.Player;
 import gameLogic.domain.Zone;
+import gameLogic.unit.UnitInfo;
+import ui.exception.UIException;
 
 public class Actions {
     Board board;

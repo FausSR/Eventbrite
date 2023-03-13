@@ -1,12 +1,12 @@
-package UI.TerminalApp;
+package ui.terminalApp;
 
-import gameLogic.controllers.PlayerController;
-import gameLogic.controllers.BoardController;
-import gameLogic.controllers.UserController;
+import gameLogic.IControllers.IBoardController;
+import gameLogic.IControllers.IPlayerController;
+import gameLogic.IControllers.IUserController;
 
 public class MainMenu {
 
-    private void startMenu(PlayerController playerController, UserController userController, BoardController boardController){
+    private void startMenu(IPlayerController playerController, IUserController userController, IBoardController boardController){
         showMenu();
         String option = "";
         while(!option.equals("exit")){
@@ -37,7 +37,7 @@ public class MainMenu {
         System.out.println("----------------------------------------------");
     }
 
-    public MainMenu(PlayerController playerController, UserController userController, BoardController boardController){
+    public MainMenu(IPlayerController playerController, IUserController userController, IBoardController boardController){
         startMenu(playerController, userController, boardController);
     }
 

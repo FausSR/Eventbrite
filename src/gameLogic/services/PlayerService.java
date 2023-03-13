@@ -5,16 +5,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-import gameLogic.Unit.UnitInfo;
+import gameLogic.IRepository.IUserRepository;
+import gameLogic.IServices.IPlayerService;
+import gameLogic.IUnit.IUnitInfo;
 import gameLogic.domain.Player;
-import gameLogic.repository.UserRepository;
 
-public class PlayerService {
-    UserRepository userRepository;
-    UnitInfo unitInfo;
+public class PlayerService implements IPlayerService{
+    IUserRepository userRepository;
+    IUnitInfo unitInfo;
 
-    public PlayerService(UserRepository userRepository){
+    public PlayerService(IUserRepository userRepository, IUnitInfo unitInfo){
         this.userRepository = userRepository;
+        this.unitInfo = unitInfo;
     }
 
     public ArrayList<Player> setPlayers(int firstPlayerId, int secondPlayerId){
@@ -56,9 +58,8 @@ public class PlayerService {
     }
 
     private void takeUnitsForSelectedCards(ArrayList<Player> actualPlayers){
-        unitInfo = new UnitInfo();
         Random random = new Random();
-        ArrayList<Integer> unitList = new ArrayList<Integer>(unitInfo.unitGeneralInformation.keySet());
+        ArrayList<Integer> unitList = new ArrayList<Integer>(unitInfo.getUnitGeneralInformation().keySet());
         int totalSelections = Math.floorDiv(unitList.size(), 2);
         ArrayList<Integer> playerOneCards = new ArrayList<Integer>();
         ArrayList<Integer> playerTwoCards = new ArrayList<Integer>();

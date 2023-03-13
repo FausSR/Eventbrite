@@ -1,4 +1,4 @@
-package gameLogic.Unit;
+package gameLogic.unit;
 
 public class Mercenary extends Unit{
     public Mercenary(int unitType, int userId){

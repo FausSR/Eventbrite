@@ -1,25 +1,25 @@
-package UI.TerminalApp;
+package ui.terminalApp;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-import UI.Exception.UIException;
+import gameLogic.IControllers.IBoardController;
+import gameLogic.IControllers.IPlayerController;
+import gameLogic.IControllers.IUserController;
 import gameLogic.IUnit.IUnit;
-import gameLogic.Unit.UnitInfo;
-import gameLogic.controllers.PlayerController;
-import gameLogic.controllers.BoardController;
-import gameLogic.controllers.UserController;
 import gameLogic.domain.Player;
 import gameLogic.domain.Board;
 import gameLogic.domain.User;
 import gameLogic.domain.Zone;
+import gameLogic.unit.UnitInfo;
+import ui.exception.UIException;
 
 public class Match {
-    PlayerController playerController;
-    BoardController boardController;
-    UserController userController;
+    IPlayerController playerController;
+    IBoardController boardController;
+    IUserController userController;
     Actions actions;
     ArrayList<Player> players;
     Board board;
@@ -29,7 +29,7 @@ public class Match {
     String RESET_COLOR = "\033[0m";
     int controlPointsToWin = 0;
 
-    public Match(PlayerController playerController, UserController userController, BoardController boardController){
+    public Match(IPlayerController playerController, IUserController userController, IBoardController boardController){
         this.playerController = playerController;
         this.boardController = boardController;
         this.userController = userController;

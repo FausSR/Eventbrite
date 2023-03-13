@@ -2,9 +2,10 @@ package gameLogic.repository;
 
 import java.util.ArrayList;
 
+import gameLogic.IRepository.IUserRepository;
 import gameLogic.domain.User;
 
-public class UserRepository {
+public class UserRepository implements IUserRepository {
     ArrayList<User> players;
 
     public ArrayList<User> getPlayers(){

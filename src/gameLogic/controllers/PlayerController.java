@@ -2,13 +2,14 @@ package gameLogic.controllers;
 
 import java.util.ArrayList;
 
+import gameLogic.IControllers.IPlayerController;
+import gameLogic.IServices.IPlayerService;
 import gameLogic.domain.Player;
-import gameLogic.services.PlayerService;
 
-public class PlayerController {
-    PlayerService playerService;
+public class PlayerController implements IPlayerController{
+    IPlayerService playerService;
 
-    public PlayerController(PlayerService playerService){
+    public PlayerController(IPlayerService playerService){
         this.playerService = playerService;
     }
 

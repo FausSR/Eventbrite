@@ -1,14 +1,14 @@
-package UI.TerminalApp;
+package ui.terminalApp;
 
 import java.util.ArrayList;
 
-import gameLogic.controllers.UserController;
+import gameLogic.IControllers.IUserController;
 import gameLogic.domain.User;
 
 public class SelectPlayer {
-    UserController userController;
+    IUserController userController;
 
-    public SelectPlayer(UserController userController){
+    public SelectPlayer(IUserController userController){
         this.userController = userController;
     }
 

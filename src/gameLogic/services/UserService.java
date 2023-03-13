@@ -2,13 +2,14 @@ package gameLogic.services;
 
 import java.util.ArrayList;
 
+import gameLogic.IRepository.IUserRepository;
+import gameLogic.IServices.IUserService;
 import gameLogic.domain.User;
-import gameLogic.repository.UserRepository;
 
-public class UserService {
-    UserRepository userRepository;
+public class UserService implements IUserService{
+    IUserRepository userRepository;
 
-    public UserService(UserRepository userRepository){
+    public UserService(IUserRepository userRepository){
         this.userRepository = userRepository;
     }
 

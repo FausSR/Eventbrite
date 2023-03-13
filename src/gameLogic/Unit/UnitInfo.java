@@ -1,12 +1,13 @@
-package gameLogic.Unit;
+package gameLogic.unit;
 
 import java.util.HashMap;
 
 import gameLogic.IUnit.IUnit;
+import gameLogic.IUnit.IUnitInfo;
 
-public class UnitInfo {
+public class UnitInfo implements IUnitInfo{
 
-    public HashMap<Integer, SpecificUnitInfo> unitGeneralInformation;
+    HashMap<Integer, SpecificUnitInfo> unitGeneralInformation;
 
     public UnitInfo(){
         unitGeneralInformation = new HashMap<Integer, SpecificUnitInfo>();
@@ -14,44 +15,28 @@ public class UnitInfo {
     }
 
     private void generateTroopsInformation(){
-        SpecificUnitInfo archer = new SpecificUnitInfo();
-        archer.name = "Archer";
-        archer.totalAmount = 4;
+        SpecificUnitInfo archer = new SpecificUnitInfo(4, "Archer");
         unitGeneralInformation.put(1, archer);
         
-        SpecificUnitInfo lancer = new SpecificUnitInfo();
-        lancer.name = "Lancer";
-        lancer.totalAmount = 4;
+        SpecificUnitInfo lancer = new SpecificUnitInfo(4, "Lancer");
         unitGeneralInformation.put(2, lancer);
 
-        SpecificUnitInfo knight = new SpecificUnitInfo();
-        knight.name = "Knight";
-        knight.totalAmount = 5;
+        SpecificUnitInfo knight = new SpecificUnitInfo(5, "Knight");
         unitGeneralInformation.put(3, knight);
 
-        SpecificUnitInfo berserker = new SpecificUnitInfo();
-        berserker.name = "Berserker";
-        berserker.totalAmount = 4;
+        SpecificUnitInfo berserker = new SpecificUnitInfo(4, "Berserker");
         unitGeneralInformation.put(4, berserker);
 
-        SpecificUnitInfo cavalry = new SpecificUnitInfo();
-        cavalry.name = "Cavalry";
-        cavalry.totalAmount = 4;
+        SpecificUnitInfo cavalry = new SpecificUnitInfo(4, "Cavalry");
         unitGeneralInformation.put(5, cavalry);
 
-        SpecificUnitInfo crossbowman = new SpecificUnitInfo();
-        crossbowman.name = "Crossbowman";
-        crossbowman.totalAmount = 5;
+        SpecificUnitInfo crossbowman = new SpecificUnitInfo(5, "Crossbowman");
         unitGeneralInformation.put(6, crossbowman);
         
-        SpecificUnitInfo mercenary = new SpecificUnitInfo();
-        mercenary.name = "Mercenary";
-        mercenary.totalAmount = 5;
+        SpecificUnitInfo mercenary = new SpecificUnitInfo(5, "Mercenary");
         unitGeneralInformation.put(7, mercenary);
         
-        SpecificUnitInfo swordsman = new SpecificUnitInfo();
-        swordsman.name = "Swordsman";
-        swordsman.totalAmount = 4;
+        SpecificUnitInfo swordsman = new SpecificUnitInfo(4, "Swordsman");
         unitGeneralInformation.put(8, swordsman);
     }
 
@@ -96,9 +81,7 @@ public class UnitInfo {
         return false;
     }
 
-}
-
-class SpecificUnitInfo{
-    int totalAmount;
-    String name;
+    public HashMap<Integer, SpecificUnitInfo> getUnitGeneralInformation() {
+        return unitGeneralInformation;
+    }
 }

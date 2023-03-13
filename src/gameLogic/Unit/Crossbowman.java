@@ -1,4 +1,4 @@
-package gameLogic.Unit;
+package gameLogic.unit;
 
 public class Crossbowman extends Unit{
 

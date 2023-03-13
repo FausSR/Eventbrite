@@ -1,29 +1,18 @@
 package gameLogic.controllers;
 
-import gameLogic.Unit.UnitInfo;
+import gameLogic.IControllers.IBoardController;
+import gameLogic.IServices.IBoardService;
 import gameLogic.domain.Board;
-import gameLogic.services.BoardService;
 
-public class BoardController {
-    BoardService boardService;
-    UnitInfo unitInfo;
-    Board board;
+public class BoardController implements IBoardController{
+    IBoardService boardService;
 
-    public BoardController(BoardService boardService){
+    public BoardController(IBoardService boardService){
         this.boardService = boardService;
     }
 
     public Board generateBoard(int numberOfColumns){
-        board = boardService.create(numberOfColumns);
-        return board;
-    }
-
-    public Board loadMap(int numberOfColumns){
-        board = boardService.create(numberOfColumns);
-        return board;
-    }
-
-    public Board getBoard(){
+        Board board = boardService.create(numberOfColumns);
         return board;
     }
 }

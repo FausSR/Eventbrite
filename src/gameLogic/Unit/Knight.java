@@ -1,4 +1,4 @@
-package gameLogic.Unit;
+package gameLogic.unit;
 
 public class Knight extends Unit{
     public Knight(int unitType, int userId){
