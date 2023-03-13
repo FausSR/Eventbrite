@@ -22,11 +22,9 @@ public class PlayerService {
         Player firstPlayer = new Player(userRepository.get(firstPlayerId));
         firstPlayer.setColor("\033[0;36m");
         firstPlayer.setPlayerNumber(0);
-        firstPlayer.addControlPoint();
         Player secondPlayer = new Player(userRepository.get(secondPlayerId));
         secondPlayer.setColor("\033[0;33m");
         secondPlayer.setPlayerNumber(1);
-        secondPlayer.addControlPoint();
         actualPlayers.add(firstPlayer);
         actualPlayers.add(secondPlayer);
         takeUnitsForSelectedCards(actualPlayers);

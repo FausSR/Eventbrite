@@ -21,6 +21,34 @@ public class BoardService {
             }
             board.setRow(row);
         }
+        if(numberOfColumns == 9)
+            loadBigMap();
+        else
+            loadSmallMap();
         return board;
+    }
+
+    
+    private void loadBigMap(){
+        board.getZone(0,2).setIsControllZone(true);
+        board.getZone(0,6).setIsControllZone(true);
+        board.getZone(8,2).setIsControllZone(true);
+        board.getZone(8,6).setIsControllZone(true);
+        board.getZone(3,1).setIsControllZone(true);
+        board.getZone(5,2).setIsControllZone(true);
+        board.getZone(3,3).setIsControllZone(true);
+        board.getZone(5,5).setIsControllZone(true);
+        board.getZone(3,6).setIsControllZone(true);
+        board.getZone(5,7).setIsControllZone(true);
+        
+    }
+
+    private void loadSmallMap(){
+        board.getZone(0,2).setIsControllZone(true);
+        board.getZone(4,2).setIsControllZone(true);
+        board.getZone(1,1).setIsControllZone(true);
+        board.getZone(1,3).setIsControllZone(true);
+        board.getZone(3,1).setIsControllZone(true);
+        board.getZone(3,3).setIsControllZone(true);
     }
 }

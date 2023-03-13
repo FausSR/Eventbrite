@@ -40,19 +40,19 @@ public class UnitInfo {
         unitGeneralInformation.put(5, cavalry);
 
         SpecificUnitInfo crossbowman = new SpecificUnitInfo();
-        cavalry.name = "Crossbowman";
-        cavalry.totalAmount = 5;
+        crossbowman.name = "Crossbowman";
+        crossbowman.totalAmount = 5;
         unitGeneralInformation.put(6, crossbowman);
         
         SpecificUnitInfo mercenary = new SpecificUnitInfo();
-        knight.name = "Mercenary";
-        knight.totalAmount = 5;
+        mercenary.name = "Mercenary";
+        mercenary.totalAmount = 5;
         unitGeneralInformation.put(7, mercenary);
         
         SpecificUnitInfo swordsman = new SpecificUnitInfo();
-        knight.name = "Swordsman";
-        knight.totalAmount = 4;
-        unitGeneralInformation.put(7, swordsman);
+        swordsman.name = "Swordsman";
+        swordsman.totalAmount = 4;
+        unitGeneralInformation.put(8, swordsman);
     }
 
     public IUnit unitConstructor(int unitType, int userId){

@@ -13,8 +13,13 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    public Board generateBoard(){
-        board = boardService.create(5);
+    public Board generateBoard(int numberOfColumns){
+        board = boardService.create(numberOfColumns);
+        return board;
+    }
+
+    public Board loadMap(int numberOfColumns){
+        board = boardService.create(numberOfColumns);
         return board;
     }
 
