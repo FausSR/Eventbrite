@@ -79,7 +79,6 @@ public class Match {
             players.get(1).setControlPoints(2);
         }
         this.actions = new Actions(this.board, this.unitInfo);
-        startGame();
     }
 
     public void showBoard(){
@@ -133,7 +132,7 @@ public class Match {
         }
     }
 
-    public Player actionMenu(Player player, Player otherPlayer){
+    private Player actionMenu(Player player, Player otherPlayer){
         this.actualTurn++;
         while(player.getHand().size() > 0 && !this.endMatch){
             try{
