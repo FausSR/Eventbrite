@@ -26,6 +26,6 @@ public class App {
         IPlayerController playerController = new PlayerController(playerService);
         IUserController userController = new UserController(userService);
         IBoardController boardController = new BoardController(boardService);
-        new MainMenu(playerController, userController, boardController);
+        new MainMenu(playerController, userController, boardController, unitInfo);
     }
 }

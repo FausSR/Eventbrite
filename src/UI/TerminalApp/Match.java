@@ -1,6 +1,5 @@
 package ui.terminalApp;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -9,11 +8,11 @@ import gameLogic.IControllers.IBoardController;
 import gameLogic.IControllers.IPlayerController;
 import gameLogic.IControllers.IUserController;
 import gameLogic.IUnit.IUnit;
+import gameLogic.IUnit.IUnitInfo;
 import gameLogic.domain.Player;
 import gameLogic.domain.Board;
 import gameLogic.domain.User;
 import gameLogic.domain.Zone;
-import gameLogic.unit.UnitInfo;
 import ui.exception.UIException;
 
 public class Match {
@@ -23,17 +22,17 @@ public class Match {
     private Actions actions;
     private ArrayList<Player> players;
     private Board board;
-    private UnitInfo unitInfo;
+    private IUnitInfo unitInfo;
     private int actualTurn, initiative;
     private boolean endMatch;
     private String RESET_COLOR = "\033[0m";
     private int controlPointsToWin = 0;
 
-    public Match(IPlayerController playerController, IUserController userController, IBoardController boardController){
+    public Match(IPlayerController playerController, IUserController userController, IBoardController boardController, IUnitInfo unitInfo){
         this.playerController = playerController;
         this.boardController = boardController;
         this.userController = userController;
-        this.unitInfo = new UnitInfo();
+        this.unitInfo = unitInfo;
         this.actualTurn = 1;
         this.initiative = 0;
         this.endMatch = false;

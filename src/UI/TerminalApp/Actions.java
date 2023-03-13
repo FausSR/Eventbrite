@@ -3,21 +3,21 @@ package ui.terminalApp;
 import java.util.ArrayList;
 import java.util.Map;
 
+import gameLogic.IUnit.IUnitInfo;
 import gameLogic.domain.Board;
 import gameLogic.domain.Player;
 import gameLogic.domain.Zone;
-import gameLogic.unit.UnitInfo;
 import ui.exception.UIException;
 
 public class Actions {
     private Board board;
-    private UnitInfo unitInfo;
+    private IUnitInfo unitInfo;
     private int LANCER_UNIT_TYPE = 2;
     private int BERSERKER_UNIT_TYPE = 4;
     private int CAVALRY_UNIT_TYPE = 5;
     private int SWORDSMAN_UNIT_TYPE = 8;
 
-    public Actions(Board board, UnitInfo unitInfo){
+    public Actions(Board board, IUnitInfo unitInfo){
         this.unitInfo = unitInfo;
         this.board = board;
     }

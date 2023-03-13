@@ -6,22 +6,23 @@ import java.util.Collections;
 import gameLogic.IControllers.IBoardController;
 import gameLogic.IControllers.IPlayerController;
 import gameLogic.IControllers.IUserController;
+import gameLogic.IUnit.IUnitInfo;
 import gameLogic.domain.User;
 
 public class MainMenu {
     
-    public MainMenu(IPlayerController playerController, IUserController userController, IBoardController boardController){
-        startMenu(playerController, userController, boardController);
+    public MainMenu(IPlayerController playerController, IUserController userController, IBoardController boardController, IUnitInfo unitInfo){
+        startMenu(playerController, userController, boardController, unitInfo);
     }
 
-    private void startMenu(IPlayerController playerController, IUserController userController, IBoardController boardController){
+    private void startMenu(IPlayerController playerController, IUserController userController, IBoardController boardController, IUnitInfo unitInfo){
         String option = "";
         while(!option.equals("exit")){
             showMenu();
             option = System.console().readLine();
             switch(option) {
                 case "1":
-                    Match match = new Match(playerController, userController, boardController);
+                    Match match = new Match(playerController, userController, boardController, unitInfo);
                     match.setGame();
                     match.startGame();
                     break;
