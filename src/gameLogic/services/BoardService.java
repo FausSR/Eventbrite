@@ -7,10 +7,8 @@ import gameLogic.domain.Board;
 import gameLogic.domain.Zone;
 
 public class BoardService implements IBoardService{
-    private Board board;
-
     public Board create(int numberOfColumns){
-        board = new Board(numberOfColumns);
+        Board board = new Board(numberOfColumns);
         for(int i = 0; i < numberOfColumns; i++){
             ArrayList<Zone> row = new ArrayList<Zone>();
             for(int j = 0; j < numberOfColumns; j++){
