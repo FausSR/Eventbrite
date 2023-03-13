@@ -16,4 +16,8 @@ public class UserService implements IUserService{
     public ArrayList<User> getAll(){
         return userRepository.getPlayers();
     }
+
+    public User create(User user){
+        return userRepository.set(user);
+    }
 }

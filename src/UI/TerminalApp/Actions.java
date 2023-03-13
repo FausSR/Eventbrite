@@ -40,9 +40,6 @@ public class Actions {
         actualPosition.setOwner(player);
         player.getHand().remove(indexOfUnit);
         player.getDiscard().add(cardToDiscard);
-
-        System.out.println("Correct action, press enter to continue.");
-        System.console().readLine();
     }
 
     public void placeAction(Player player) throws UIException{
@@ -112,7 +109,7 @@ public class Actions {
 
         if(actualUnitType == CAVALRY_UNIT_TYPE){
             System.out.println("Your cavalry can attack after move.");
-            extraAttack(player, otherPlayer, actualPosition, actualTurn);
+            extraAttack(player, otherPlayer, newPosition, actualTurn);
         }
     }
 

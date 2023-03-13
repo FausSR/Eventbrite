@@ -17,8 +17,8 @@ public class PlayerController implements IPlayerController{
         return playerService.setPlayers(firstPlayerId, secondPlayerId);
     }
 
-    public void drawCards(Player player){
-        playerService.drawCards(player);
+    public Player drawCards(Player player){
+        return playerService.drawCards(player);
     }
 
     public Player fillBag(Player player){

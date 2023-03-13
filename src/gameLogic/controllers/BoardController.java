@@ -12,7 +12,6 @@ public class BoardController implements IBoardController{
     }
 
     public Board generateBoard(int numberOfColumns){
-        Board board = boardService.create(numberOfColumns);
-        return board;
+        return boardService.create(numberOfColumns);
     }
 }

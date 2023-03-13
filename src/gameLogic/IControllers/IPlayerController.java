@@ -6,6 +6,6 @@ import gameLogic.domain.Player;
 
 public interface IPlayerController {
     ArrayList<Player> setPlayers(int firstPlayerId, int secondPlayerId);
-    void drawCards(Player player);
+    Player drawCards(Player player);
     Player fillBag(Player player);
 }

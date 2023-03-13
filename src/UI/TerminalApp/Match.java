@@ -124,8 +124,8 @@ public class Match {
             Player secondPlayer = null;
             if(this.initiative == 0) secondPlayer = players.get(1);
             else secondPlayer = players.get(0);
-            playerController.drawCards(firstPlayer);
-            playerController.drawCards(secondPlayer);
+            firstPlayer = playerController.drawCards(firstPlayer);
+            secondPlayer = playerController.drawCards(secondPlayer);
             actionMenu(firstPlayer, secondPlayer);
             actionMenu(secondPlayer, firstPlayer);
             if(firstPlayer.getBag().size() == 0) playerController.fillBag(firstPlayer);
@@ -133,7 +133,7 @@ public class Match {
         }
     }
 
-    public void actionMenu(Player player, Player otherPlayer){
+    public Player actionMenu(Player player, Player otherPlayer){
         this.actualTurn++;
         while(player.getHand().size() > 0 && !this.endMatch){
             try{
@@ -181,8 +181,15 @@ public class Match {
                 System.out.println("Press enter to continue.");
                 System.console().readLine();
             }
-            checkIfWin(player, otherPlayer);
+            if(checkIfWin(player, otherPlayer)){
+                endMatch = true;
+                player.getUser().playerWon();
+                System.out.println(String.format("Congratulations %s you win!", player.getUser().getName()));
+                System.out.println("Press enter to continue.");
+                System.console().readLine();
+            }
         }
+        return player;
     }
 
     private String showNamesInArray(ArrayList<Integer> list){
@@ -197,8 +204,8 @@ public class Match {
                 .collect(Collectors.joining(", ", "", ""));
     }
 
-    private void checkIfWin(Player player, Player otherPlayer){
-        if(player.getControlPoints() == this.controlPointsToWin ||
+    private boolean checkIfWin(Player player, Player otherPlayer){
+        return player.getControlPoints() >= this.controlPointsToWin ||
                 (otherPlayer.getDeployedUnits() == 0 &&
                 (otherPlayer.getBag().size() == 0 || 
                     (otherPlayer.getBag().size() == 1 && 
@@ -209,14 +216,6 @@ public class Match {
                 (otherPlayer.getDiscard().size() == 0 || 
                     (otherPlayer.getHand().size() == 1 && 
                     unitInfo.isRoyalUnit(otherPlayer.getHand().get(0)))) &&
-                otherPlayer.getRecruitment().isEmpty())) 
-            {
-                endMatch = true;
-                player.getUser().addVictories();
-                player.getUser().setLastVictory(LocalDate.now());
-                System.out.println(String.format("Congratulations %s you win!", player.getUser().getName()));
-                System.out.println("Press enter to continue.");
-                System.console().readLine();
-            }
+                otherPlayer.getRecruitment().isEmpty());
     }
 }

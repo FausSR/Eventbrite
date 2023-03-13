@@ -29,13 +29,13 @@ public class PlayerService implements IPlayerService{
         secondPlayer.setPlayerNumber(1);
         actualPlayers.add(firstPlayer);
         actualPlayers.add(secondPlayer);
-        takeUnitsForSelectedCards(actualPlayers);
-        prepareBagAndRecruitment(firstPlayer);
-        prepareBagAndRecruitment(secondPlayer);
+        actualPlayers = takeUnitsForSelectedCards(actualPlayers);
+        firstPlayer = prepareBagAndRecruitment(firstPlayer);
+        secondPlayer = prepareBagAndRecruitment(secondPlayer);
         return actualPlayers;
     }
 
-    public void drawCards(Player player){
+    public Player drawCards(Player player){
         player.addToDiscard(player.getHand());
         player.setHand(new ArrayList<Integer>());
         int maxCardsPerTurn = 3;
@@ -49,6 +49,7 @@ public class PlayerService implements IPlayerService{
         for (int i = totalIterations - 1; i >= 0; i--) {
             player.getHand().add(bag.remove(i));
         }
+        return player;
     }
 
     public Player fillBag(Player player){
@@ -57,7 +58,7 @@ public class PlayerService implements IPlayerService{
         return player;
     }
 
-    private void takeUnitsForSelectedCards(ArrayList<Player> actualPlayers){
+    private ArrayList<Player> takeUnitsForSelectedCards(ArrayList<Player> actualPlayers){
         Random random = new Random();
         ArrayList<Integer> unitList = new ArrayList<Integer>(unitInfo.getUnitGeneralInformation().keySet());
         int totalSelections = Math.floorDiv(unitList.size(), 2);
@@ -72,9 +73,10 @@ public class PlayerService implements IPlayerService{
 
         actualPlayers.get(0).setSelectedCards(playerOneCards);
         actualPlayers.get(1).setSelectedCards(playerTwoCards);
+        return actualPlayers;
     }
 
-    private void prepareBagAndRecruitment(Player actualPlayer){
+    private Player prepareBagAndRecruitment(Player actualPlayer){
         ArrayList<Integer> firstBag = new ArrayList<>();
         HashMap<Integer, Integer> firstRecruitment = new HashMap<>();
         for(Integer unitType: actualPlayer.getSelectedCards()){
@@ -88,5 +90,6 @@ public class PlayerService implements IPlayerService{
 
         actualPlayer.setBag(firstBag);
         actualPlayer.setRecruitment(firstRecruitment);
+        return actualPlayer;
     }
 }

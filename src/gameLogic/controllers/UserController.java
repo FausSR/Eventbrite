@@ -16,4 +16,8 @@ public class UserController implements IUserController{
     public ArrayList<User> getAll(){
         return userService.getAll();
     }
+
+    public User create(User user){
+        return userService.create(user);
+    }
 }

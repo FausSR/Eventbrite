@@ -6,4 +6,5 @@ import gameLogic.domain.User;
 
 public interface IUserService {
     ArrayList<User> getAll();
+    User create(User user);
 }

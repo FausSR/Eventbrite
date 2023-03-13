@@ -7,5 +7,5 @@ import gameLogic.domain.User;
 public interface IUserRepository {
     ArrayList<User> getPlayers();
     User get(int id);
-    
+    User set(User user);
 }

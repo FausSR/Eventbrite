@@ -1,6 +1,7 @@
 package gameLogic.domain;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class User {
     private int id;
@@ -49,4 +50,14 @@ public class User {
         this.victories++;
         this.lastVictory = LocalDate.now();
     }
+
+    public static Comparator<User> userCompareByVictories = new Comparator<User>() {
+
+        public int compare(User firstUser, User secondUser) {
+ 
+            int firstVictories = firstUser.getVictories();
+            int secondVictories = secondUser.getVictories();
+            return secondVictories - firstVictories;
+        }
+    };
 }
