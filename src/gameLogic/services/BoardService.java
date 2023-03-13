@@ -7,7 +7,7 @@ import gameLogic.domain.Board;
 import gameLogic.domain.Zone;
 
 public class BoardService implements IBoardService{
-    Board board;
+    private Board board;
 
     public Board create(int numberOfColumns){
         board = new Board(numberOfColumns);

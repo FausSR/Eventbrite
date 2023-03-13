@@ -10,12 +10,12 @@ import gameLogic.unit.UnitInfo;
 import ui.exception.UIException;
 
 public class Actions {
-    Board board;
-    UnitInfo unitInfo;
-    int LANCER_UNIT_TYPE = 2;
-    int BERSERKER_UNIT_TYPE = 4;
-    int CAVALRY_UNIT_TYPE = 5;
-    int SWORDSMAN_UNIT_TYPE = 8;
+    private Board board;
+    private UnitInfo unitInfo;
+    private int LANCER_UNIT_TYPE = 2;
+    private int BERSERKER_UNIT_TYPE = 4;
+    private int CAVALRY_UNIT_TYPE = 5;
+    private int SWORDSMAN_UNIT_TYPE = 8;
 
     public Actions(Board board, UnitInfo unitInfo){
         this.unitInfo = unitInfo;

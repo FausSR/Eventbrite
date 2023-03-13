@@ -7,7 +7,7 @@ import gameLogic.IServices.IUserService;
 import gameLogic.domain.User;
 
 public class UserService implements IUserService{
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
 
     public UserService(IUserRepository userRepository){
         this.userRepository = userRepository;

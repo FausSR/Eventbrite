@@ -6,7 +6,7 @@ import gameLogic.IControllers.IUserController;
 import gameLogic.domain.User;
 
 public class SelectPlayer {
-    IUserController userController;
+    private IUserController userController;
 
     public SelectPlayer(IUserController userController){
         this.userController = userController;

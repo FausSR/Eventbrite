@@ -3,11 +3,11 @@ package gameLogic.domain;
 import gameLogic.IUnit.IUnit;
 
 public class Zone {
-    IUnit unit;
-    boolean isControlZone;
-    Player owner;
-    int row, column;
-
+    private IUnit unit;
+    private boolean isControlZone;
+    private Player owner;
+    private int row, column;
+    
     public IUnit getUnit() {
         return unit;
     }

@@ -6,7 +6,7 @@ import gameLogic.IRepository.IUserRepository;
 import gameLogic.domain.User;
 
 public class UserRepository implements IUserRepository {
-    ArrayList<User> players;
+    private ArrayList<User> players;
 
     public ArrayList<User> getPlayers(){
         ArrayList<User> users = new ArrayList<>(players);

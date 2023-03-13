@@ -17,17 +17,17 @@ import gameLogic.unit.UnitInfo;
 import ui.exception.UIException;
 
 public class Match {
-    IPlayerController playerController;
-    IBoardController boardController;
-    IUserController userController;
-    Actions actions;
-    ArrayList<Player> players;
-    Board board;
-    UnitInfo unitInfo;
-    int actualTurn, initiative;
-    boolean endMatch;
-    String RESET_COLOR = "\033[0m";
-    int controlPointsToWin = 0;
+    private IPlayerController playerController;
+    private IBoardController boardController;
+    private IUserController userController;
+    private Actions actions;
+    private ArrayList<Player> players;
+    private Board board;
+    private UnitInfo unitInfo;
+    private int actualTurn, initiative;
+    private boolean endMatch;
+    private String RESET_COLOR = "\033[0m";
+    private int controlPointsToWin = 0;
 
     public Match(IPlayerController playerController, IUserController userController, IBoardController boardController){
         this.playerController = playerController;

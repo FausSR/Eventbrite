@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
-    ArrayList<Integer> discard, bag, selectedCards, hand;
-    String color;
-    int playerNumber, controlPoints, deployedUnits;
-    HashMap<Integer, Integer> recruitment;
-    User user;
+    private ArrayList<Integer> discard, bag, selectedCards, hand;
+    private String color;
+    private int playerNumber, controlPoints, deployedUnits;
+    private HashMap<Integer, Integer> recruitment;
+    private User user;
 
     public Player(User user){
         this.user = user;
@@ -63,11 +63,11 @@ public class Player {
     }
 
     public User getUser(){
-        return this.user;
+        return user;
     }
     
     public ArrayList<Integer> getBag() {
-        return this.bag;
+        return bag;
     }
 
     public void setBag(ArrayList<Integer> bag) {
@@ -75,7 +75,7 @@ public class Player {
     }
 
     public HashMap<Integer, Integer> getRecruitment() {
-        return this.recruitment;
+        return recruitment;
     }
     
     public void setRecruitment(HashMap<Integer, Integer> recruitment) {
@@ -83,7 +83,7 @@ public class Player {
     }
 
     public ArrayList<Integer> getSelectedCards() {
-        return this.selectedCards;
+        return selectedCards;
     }
 
     public void setSelectedCards(ArrayList<Integer> selectedCards) {
@@ -91,7 +91,7 @@ public class Player {
     }
 
     public ArrayList<Integer> getHand(){
-        return this.hand;
+        return hand;
     }
 
     public void setHand(ArrayList<Integer> hand){
@@ -99,7 +99,7 @@ public class Player {
     }
 
     public ArrayList<Integer> getDiscard(){
-        return this.discard;
+        return discard;
     }
 
     public void setDiscard(ArrayList<Integer> discard){
@@ -127,6 +127,6 @@ public class Player {
             return false;
         }
         Player c = (Player) o;
-        return Integer.compare(user.id, c.getUser().getId()) == 0;
+        return Integer.compare(user.getId(), c.getUser().getId()) == 0;
     }
 }

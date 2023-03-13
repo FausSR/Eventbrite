@@ -3,10 +3,10 @@ package gameLogic.domain;
 import java.time.LocalDate;
 
 public class User {
-    int id;
-    String name;
-    int victories;
-    LocalDate lastVictory;
+    private int id;
+    private String name;
+    private int victories;
+    private LocalDate lastVictory;
 
     public User(String givenName){
         this.id = (int) (Math.random()*100000); // Fake id
@@ -26,7 +26,7 @@ public class User {
     }
 
     public int getVictories(){
-        return this.victories;
+        return victories;
     }
 
     public void addVictories(){
@@ -34,7 +34,7 @@ public class User {
     }
 
     public LocalDate getLastVictory(){
-        return this.lastVictory;
+        return lastVictory;
     }
 
     public void setLastVictory(LocalDate date){
@@ -42,7 +42,7 @@ public class User {
     }
 
     public int getId(){
-        return this.id;
+        return id;
     }
 
     public void playerWon(){

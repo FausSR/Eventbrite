@@ -7,7 +7,7 @@ import gameLogic.IServices.IUserService;
 import gameLogic.domain.User;
 
 public class UserController implements IUserController{
-    IUserService userService;
+    private IUserService userService;
 
     public UserController(IUserService userService){
         this.userService = userService;

@@ -7,7 +7,7 @@ import gameLogic.IServices.IPlayerService;
 import gameLogic.domain.Player;
 
 public class PlayerController implements IPlayerController{
-    IPlayerService playerService;
+    private IPlayerService playerService;
 
     public PlayerController(IPlayerService playerService){
         this.playerService = playerService;

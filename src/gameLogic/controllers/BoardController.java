@@ -5,7 +5,7 @@ import gameLogic.IServices.IBoardService;
 import gameLogic.domain.Board;
 
 public class BoardController implements IBoardController{
-    IBoardService boardService;
+    private IBoardService boardService;
 
     public BoardController(IBoardService boardService){
         this.boardService = boardService;

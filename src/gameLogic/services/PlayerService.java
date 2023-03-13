@@ -11,8 +11,8 @@ import gameLogic.IUnit.IUnitInfo;
 import gameLogic.domain.Player;
 
 public class PlayerService implements IPlayerService{
-    IUserRepository userRepository;
-    IUnitInfo unitInfo;
+    private IUserRepository userRepository;
+    private IUnitInfo unitInfo;
 
     public PlayerService(IUserRepository userRepository, IUnitInfo unitInfo){
         this.userRepository = userRepository;
